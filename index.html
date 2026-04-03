@@ -13,15 +13,34 @@ body{
   font-family:'Poppins',sans-serif;
   text-align:center;
   color:white;
-  background:linear-gradient(-45deg,#ff4d6d,#c9184a,#a4133c,#800f2f);
-  background-size:400% 400%;
-  animation:bg 15s infinite;
+  background:black;
 }
-@keyframes bg{
-  0%{background-position:0%}
-  50%{background-position:100%}
-  100%{background-position:0%}
+
+/* OPENING */
+#startScreen{
+  position:fixed;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  z-index:999;
 }
+
+.start-btn{
+  margin-top:20px;
+  padding:12px 20px;
+  border-radius:25px;
+  border:none;
+  background:white;
+  color:#ff4d6d;
+  font-weight:bold;
+}
+
+/* MAIN */
+.hidden{display:none;}
 
 .container{
   min-height:100vh;
@@ -30,6 +49,15 @@ body{
   justify-content:center;
   align-items:center;
   padding:20px;
+  background:linear-gradient(-45deg,#ff4d6d,#c9184a,#a4133c,#800f2f);
+  background-size:400% 400%;
+  animation:bg 15s infinite;
+}
+
+@keyframes bg{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
 }
 
 .text-box{
@@ -58,32 +86,12 @@ button{
   background:white;
   color:#ff4d6d;
   font-weight:bold;
-  transition:0.3s;
-}
-button:hover{
-  transform:scale(1.05);
-}
-
-/* FOTO JATUH */
-.photo-fall{
-  position:fixed;
-  top:-100px;
-  animation:fall linear;
-  opacity:0.8;
-}
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* BOUQUET */
 .bouquet{
   width:220px;
   margin-top:25px;
-  animation:bouquetIn 1s ease;
-}
-@keyframes bouquetIn{
-  from{opacity:0;transform:scale(0.8);}
-  to{opacity:1;transform:scale(1);}
 }
 
 /* MEMORY */
@@ -110,9 +118,16 @@ button:hover{
 
 <body>
 
-<div class="container" id="main">
+<!-- OPENING -->
+<div id="startScreen">
+  <h2>for you 💖</h2>
+  <button class="start-btn" onclick="startApp()">Tap to Start ✨</button>
+</div>
+
+<!-- MAIN -->
+<div class="container hidden" id="main">
   <div class="text-box">
-    <h1>Hai Nabila Bailey 💖</h1>
+    <h1>Hai Nabila 💖</h1>
     <p id="text"></p>
   </div>
   <button onclick="next()">Lanjut 👉</button>
@@ -129,8 +144,6 @@ const lagu2=document.getElementById("lagu2");
 let step=0;
 let isTyping=false;
 
-const fallingPhotos=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
-
 const memoryPhotos=[
 "kenangan1.jpg","kenangan2.jpg","kenangan3.jpg","kenangan4.jpg","kenangan5.jpg",
 "kenangan6.jpg","kenangan7.jpg","kenangan8.jpg","kenangan9.jpg","kenangan10.jpg","kenangan11.jpg"
@@ -140,50 +153,45 @@ const lines=[
 "jujur... aku sempet mikir lama sebelum bikin ini 😅",
 "soalnya ini bukan hal kecil buat aku...",
 "",
-"aku pengen nyampein ini dengan cara yang paling jujur yang aku bisa",
-"",
-"awalnya aku kira ini cuma perasaan biasa",
-"tapi ternyata... gak sesederhana itu",
+"aku pengen jujur sama apa yang aku rasain",
 "",
 "setiap kita ngobrol...",
-"selalu ada sesuatu yang bikin aku nyaman 🥹",
+"aku selalu ngerasa nyaman 🥹",
 "",
 "dan entah sejak kapan...",
-"kamu jadi seseorang yang sering aku pikirin",
-"(entah kenapa... kamu selalu berhasil muncul di pikiranku, dan anehnya... aku gak pernah keberatan dengan itu 🥹)",
+"kamu jadi orang yang sering aku pikirin",
+"(dan anehnya... aku gak pernah keberatan dengan itu 🥹)",
 "",
-"dan dari situ aku mulai sadar...",
+"dan dari situ aku sadar...",
 "perasaan ini bukan sekadar biasa",
 "",
 "and somewhere along the way...",
 "I’ve fallen for you... more than I planned 💖",
 "",
-"dan semakin lama...",
-"aku makin yakin sama apa yang aku rasain",
-"",
 "and I really want to be with you",
-"",
-"aku gak mau maksa kamu",
-"aku cuma pengen jujur sama apa yang aku rasain",
-"",
-"and honestly... I choose you 💖",
 "",
 "mau gak kamu jalanin ini sama aku? 🥹"
 ];
 
-/* TYPE FIX FINAL */
+/* START */
+function startApp(){
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("main").classList.remove("hidden");
+
+  lagu1.volume=0.6;
+  lagu1.play().catch(()=>{});
+
+  next(); // langsung mulai
+}
+
+/* TYPE */
 function typeText(teks){
   if(teks.trim()===""){
     text.innerHTML="<br>";
-    isTyping=false;
     return;
   }
 
-  text.style.opacity=0;
-  setTimeout(()=> text.style.opacity=1,100);
-
   text.textContent="";
-
   let i=0;
   isTyping=true;
 
@@ -197,24 +205,11 @@ function typeText(teks){
   },35);
 }
 
+/* NEXT */
 function next(){
   if(isTyping) return;
 
   step++;
-
-  if(step===1){
-    lagu1.currentTime=25;
-    lagu1.volume=0;
-    lagu1.play().then(()=>{
-      let vol=0;
-      let fade=setInterval(()=>{
-        if(vol<0.6){
-          vol+=0.05;
-          lagu1.volume=vol;
-        } else clearInterval(fade);
-      },100);
-    }).catch(()=>{});
-  }
 
   if(step<=lines.length){
     typeText(lines[step-1]);
@@ -228,20 +223,14 @@ function next(){
 /* ENDING */
 function showEnding(){
   lagu1.pause();
-
-  setTimeout(()=>{
-    lagu2.volume=0.6;
-    lagu2.play().catch(()=>{});
-  },500);
+  lagu2.play().catch(()=>{});
 
   document.getElementById("main").innerHTML=`
   <div class="text-box">
     <h1>💖</h1>
     <p>
       thank you for reading this... 🥹<br><br>
-      I really mean every single word 💖<br><br>
-      I’ll always try my best for you 🤍<br><br>
-      and I’m really glad… it’s you 💖
+      I really mean everything 💖
     </p>
   </div>
 
@@ -251,43 +240,28 @@ function showEnding(){
   `;
 }
 
-/* CINEMATIC MEMORY */
+/* MEMORY */
 function showMemorySequence(){
   let index=0;
 
   document.getElementById("main").innerHTML=`
-  <div class="container">
-    <img id="memoryImg" class="memory-main">
-    <p>Kenangan kita... 💖</p>
-  </div>
+  <img id="memoryImg" class="memory-main">
+  <p>Kenangan kita... 💖</p>
   `;
 
   let img=document.getElementById("memoryImg");
 
   function nextImage(){
     if(index < memoryPhotos.length){
-      img.style.opacity=0;
-      setTimeout(()=>{
-        img.src=memoryPhotos[index];
-        img.style.opacity=1;
-      },200);
-
+      img.src = memoryPhotos[index];
       index++;
-      setTimeout(nextImage,1800);
+      setTimeout(nextImage,1500);
     } else {
-      setTimeout(showAllButton,2000);
+      showGallery();
     }
   }
 
   nextImage();
-}
-
-function showAllButton(){
-  let btn=document.createElement("button");
-  btn.innerHTML="Lihat Semua Kenangan 💖";
-  btn.onclick=showGallery;
-
-  document.querySelector(".container").appendChild(btn);
 }
 
 /* GRID */
@@ -305,18 +279,6 @@ function showGallery(){
     g.appendChild(img);
   });
 }
-
-/* FOTO JATUH */
-setInterval(()=>{
-  let img=document.createElement("img");
-  img.src=fallingPhotos[Math.floor(Math.random()*fallingPhotos.length)];
-  img.className="photo-fall";
-  img.style.left=Math.random()*100+"vw";
-  img.style.width=(Math.random()*20+60)+"px";
-  img.style.animationDuration=(Math.random()*3+4)+"s";
-  document.body.appendChild(img);
-  setTimeout(()=>img.remove(),6000);
-},2000);
 </script>
 
 </body>
