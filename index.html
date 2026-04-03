@@ -13,7 +13,7 @@ body{margin:0;font-family:'Poppins',sans-serif;color:white;overflow:hidden}
 /* INTRO */
 #intro{position:fixed;inset:0;background:black;display:flex;justify-content:center;align-items:center;flex-direction:column;z-index:999}
 
-/* BG */
+/* BACKGROUND */
 #bg-layer{
 position:fixed;inset:0;z-index:0;
 background:linear-gradient(-45deg,#ff4d6d,#c9184a,#ff758f,#ff8fa3);
@@ -144,6 +144,7 @@ const emojiLayer=document.getElementById("emoji-layer");
 
 let index=0,check,started=false,fallInterval;
 
+/* INTRO TEXT */
 const introLines=[
 "before this starts...",
 "read it slowly... okay? 🤍",
@@ -151,6 +152,7 @@ const introLines=[
 "I made this for you"
 ];
 
+/* SYNC TIMELINE */
 const timeline=[
 {time:1.5,text:"hey... can you stay for a moment? 🥹"},
 {time:5,text:"aku bikin ini bukan karena iseng..."},
@@ -176,23 +178,47 @@ setTimeout(showIntroText,800);
 
 function showIntroText(){
 let i=0;
-content.innerHTML=`<div class="text-box"><p id="introText"></p></div>`;
+
+content.innerHTML=`
+<div class="text-box">
+<p id="introText"></p>
+</div>
+<div id="photo-slot"></div>
+`;
+
 let el=document.getElementById("introText");
+let slot=document.getElementById("photo-slot");
 
 function nextLine(){
 if(i<introLines.length){
+
 el.innerHTML+=introLines[i]+"<br>";
+
+if(i===introLines.length-1){
+let img=document.createElement("img");
+img.src="foto.jpg";
+img.id="mainPhoto";
+img.className="main-photo";
+slot.appendChild(img);
+
+setTimeout(()=>{
+img.style.opacity=1;
+img.style.transform="translateY(0)";
+},300);
+}
+
 i++;
-setTimeout(nextLine,1200);
+setTimeout(nextLine,1400);
 }else{
-setTimeout(startStory,1500);
+setTimeout(startStory,1600);
 }
 }
 nextLine();
 }
 
+let displayOffset=350;
+
 function startStory(){
-createPhoto();
 startFalling();
 syncStory();
 }
@@ -200,13 +226,17 @@ syncStory();
 function syncStory(){
 check=setInterval(()=>{
 let current=lagu1.currentTime;
+
 if(index<timeline.length && current>=timeline[index].time){
+setTimeout(()=>{
 showLine(timeline[index].text);
+},displayOffset);
 index++;
 }
+
 if(index>=timeline.length){
 clearInterval(check);
-setTimeout(showChoice,2500);
+setTimeout(showChoice,2800);
 }
 },200);
 }
@@ -220,18 +250,6 @@ content.innerHTML=`
 <div id="photo-slot"></div>
 `;
 attachPhoto();
-}
-
-function createPhoto(){
-let img=document.createElement("img");
-img.src="foto.jpg";
-img.id="mainPhoto";
-img.className="main-photo";
-document.body.appendChild(img);
-setTimeout(()=>{
-img.style.opacity=1;
-img.style.transform="translateY(0)";
-},800);
 }
 
 function attachPhoto(){
@@ -305,6 +323,42 @@ content.innerHTML=`
 attachPhoto();
 }
 
+function showLoveSequence(){
+
+const texts=[
+"Love you 💕💕💕",
+"Love you more 💐💖💕",
+"Love you more than you expect 🤍💖"
+];
+
+let i=0;
+
+function next(){
+if(i>=texts.length){
+let last=document.getElementById("lovePopup");
+if(last){
+last.style.transition="0.6s";
+last.style.opacity=0;
+setTimeout(()=>last.remove(),600);
+}
+return;
+}
+
+let old=document.getElementById("lovePopup");
+if(old) old.remove();
+
+let popup=document.createElement("div");
+popup.id="lovePopup";
+popup.innerHTML=texts[i];
+document.body.appendChild(popup);
+
+i++;
+setTimeout(next,2000);
+}
+
+next();
+}
+
 function finalYes(){
 stopFalling();
 startEmoji();
@@ -342,12 +396,7 @@ and yeah... I’m really glad it’s you 🤍
 <img src="bouquet.png" class="bouquet">
 `;
 
-setTimeout(()=>{
-let popup=document.createElement("div");
-popup.id="lovePopup";
-popup.innerHTML="Love you 💕💕💕";
-document.body.appendChild(popup);
-},4500);
+setTimeout(showLoveSequence,4500);
 
 },1500);
 }
