@@ -5,157 +5,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  color:white;
-  overflow:hidden;
-}
+body{margin:0;font-family:'Poppins',sans-serif;color:white;overflow:hidden}
 
 /* INTRO */
-#intro{
-  position:fixed;
-  inset:0;
-  background:black;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  z-index:999;
-}
+#intro{position:fixed;inset:0;background:black;display:flex;justify-content:center;align-items:center;flex-direction:column;z-index:999}
 
 /* BACKGROUND */
 #bg-layer{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  background:linear-gradient(-45deg,#ff4d6d,#c9184a,#ff758f,#ff8fa3);
-  background-size:400% 400%;
-  animation:bgMove 12s ease infinite;
+position:fixed;inset:0;z-index:0;
+background:linear-gradient(-45deg,#ff4d6d,#c9184a,#ff758f,#ff8fa3);
+background-size:400% 400%;
+animation:bgMove 12s ease infinite;
 }
-
+#bg-layer::after{
+content:"";position:absolute;inset:0;
+background:radial-gradient(circle, rgba(255,182,193,0.15), rgba(0,0,0,0.7));
+}
 @keyframes bgMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
-#falling-layer, #emoji-layer{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-#falling-layer{z-index:1;}
-#emoji-layer{z-index:2;}
+/* LAYERS */
+#falling-layer,#emoji-layer{position:fixed;inset:0;pointer-events:none}
+#falling-layer{z-index:1}
+#emoji-layer{z-index:2}
 
 .container{
-  position:relative;
-  z-index:3;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
+position:relative;z-index:3;
+min-height:100vh;
+display:flex;flex-direction:column;
+justify-content:center;align-items:center;
+padding:20px;
 }
 
 /* TEXT */
 .text-box{
-  background:rgba(0,0,0,0.6);
-  padding:18px;
-  border-radius:16px;
-  width:90%;
-  font-size:16px;
-  line-height:1.6;
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(6px);
+padding:20px;border-radius:18px;width:90%;
+line-height:1.7;
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
-
-.header-name{
-  font-size:15px;
-  opacity:0.8;
-}
+.header-name{font-family:'Playfair Display';font-size:17px}
 
 /* BUTTON */
 button{
-  padding:12px 18px;
-  border:none;
-  border-radius:25px;
-  background:white;
-  color:#ff4d6d;
-  font-weight:bold;
-  margin-top:12px;
+padding:12px 18px;border:none;border-radius:25px;
+background:linear-gradient(135deg,#ff8fa3,#ff4d6d);
+color:white;font-weight:bold;margin-top:12px;
 }
 
-/* FOTO */
-#photo-slot{
-  display:flex;
-  justify-content:center;
-  margin:10px 0;
-}
-
+/* PHOTO */
+#photo-slot{display:flex;justify-content:center;margin:12px 0}
 .main-photo{
-  width:70%;
-  max-width:260px;
-  border-radius:16px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.8s;
+width:70%;max-width:260px;border-radius:16px;
+opacity:0;transform:translateY(20px);
+transition:0.8s;
 }
 
-.photo-fall{
-  position:absolute;
-  top:-100px;
-  animation:fall linear;
-  opacity:0.35;
-}
-
-.emoji-fall{
-  position:absolute;
-  top:-30px;
-  animation:fall linear;
-  opacity:0.6;
-}
-
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(360deg);}
-}
+/* FALL */
+.photo-fall{position:absolute;top:-100px;animation:fall linear;opacity:0.3}
+.emoji-fall{position:absolute;top:-30px;animation:fall linear;opacity:0.6}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
 
 /* BOUQUET */
 .bouquet{
-  position:fixed;
-  left:50%;
-  bottom:-100px;
-  transform:translateX(-50%);
-  width:110%;
-  height:55vh;
-  object-fit:contain;
-  z-index:4;
+position:fixed;left:50%;bottom:0;
+transform:translateX(-50%) translateY(40px);
+width:85%;max-width:420px;
+opacity:0;
+animation:bouquetIn 1.2s ease forwards,float 6s ease-in-out infinite;
+z-index:4;
+}
+@keyframes bouquetIn{to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes float{
+0%{transform:translateX(-50%) translateY(0)}
+50%{transform:translateX(-50%) translateY(-10px)}
+100%{transform:translateX(-50%) translateY(0)}
 }
 
 /* MEMORY */
-.memory-wrap{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:80vh;
-}
-
-.memory-main{
-  width:90%;
-  border-radius:16px;
-  opacity:0;
-  transition:0.8s;
-}
+.memory-wrap{display:flex;justify-content:center;align-items:center;height:80vh}
+.memory-main{width:90%;border-radius:16px;opacity:0;transition:0.8s}
 </style>
 </head>
 
 <body>
 
 <div id="intro">
-  <h2>hey... 🥹</h2>
-  <button onclick="startApp()">tap slowly 💖</button>
+<h2>hey... 🥹</h2>
+<button onclick="startApp()">tap slowly 💖</button>
 </div>
 
 <div id="bg-layer"></div>
@@ -163,7 +107,7 @@ button{
 <div id="emoji-layer"></div>
 
 <div id="main" class="container" style="display:none;">
-  <div id="content"></div>
+<div id="content"></div>
 </div>
 
 <audio id="lagu1" src="awal.mp3"></audio>
@@ -174,215 +118,179 @@ const content=document.getElementById("content");
 const fallingLayer=document.getElementById("falling-layer");
 const emojiLayer=document.getElementById("emoji-layer");
 
-let step=0, typing=false, fallInterval, emojiInterval;
+let index=0,check;
 
-const lines = [
-"hey... can you stay for a moment? 🥹",
-"aku bikin ini bukan karena iseng...",
-"but because there’s something I really want you to know",
-"setiap kita ngobrol...",
-"aku selalu ngerasa nyaman banget",
-"and somehow... I keep looking forward to talking to you",
-"aneh ya...",
-"you kinda live in my head rent free 😌",
-"so yeah...",
-"I like you 💖",
-"not just dikit...",
-"but in a way I actually care about you 🥹"
+/* TIMELINE SYNC */
+const timeline=[
+{time:1.5,text:"hey... can you stay for a moment? 🥹"},
+{time:5,text:"aku bikin ini bukan karena iseng..."},
+{time:9,text:"but because there’s something I really want you to know"},
+{time:14,text:"aku nyaman banget ngobrol sama kamu"},
+{time:19,text:"and somehow... you stay in my mind 😌"},
+{time:24,text:"aneh ya..."},
+{time:27,text:"you kinda live in my head rent free 😏"},
+{time:31,text:"so yeah..."},
+{time:34,text:"I like you 💖"},
+{time:38,text:"not just dikit..."},
+{time:41,text:"but in a way I actually care about you 🥹"}
 ];
 
+/* START */
 function startApp(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("main").style.display="flex";
-  document.getElementById("lagu1").play().catch(()=>{});
-  setTimeout(startStory,1800);
+intro.style.display="none";
+main.style.display="flex";
+lagu1.play().catch(()=>{});
+setTimeout(startStory,1500);
 }
 
+/* STORY */
 function startStory(){
-  createPhoto();
-  startFalling();
-  next();
+createPhoto();
+startFalling();
+syncStory();
 }
 
+function syncStory(){
+check=setInterval(()=>{
+let current=lagu1.currentTime;
+
+if(index<timeline.length && current>=timeline[index].time){
+showLine(timeline[index].text);
+index++;
+}
+
+if(index>=timeline.length){
+clearInterval(check);
+setTimeout(showChoice,2500);
+}
+},200);
+}
+
+/* SHOW TEXT */
+function showLine(text){
+content.innerHTML=`
+<div class="text-box">
+<div class="header-name">Hai Nabila Bailey 💕</div>
+<p>${text}</p>
+</div>
+<div id="photo-slot"></div>
+`;
+
+let photo=document.getElementById("mainPhoto");
+let slot=document.getElementById("photo-slot");
+if(photo&&slot)slot.appendChild(photo);
+}
+
+/* PHOTO */
 function createPhoto(){
-  let img=document.createElement("img");
-  img.src="foto.jpg";
-  img.id="mainPhoto";
-  img.className="main-photo";
-  document.body.appendChild(img);
+let img=document.createElement("img");
+img.src="foto.jpg";
+img.id="mainPhoto";
+img.className="main-photo";
+document.body.appendChild(img);
 
-  setTimeout(()=>{
-    img.style.opacity=1;
-    img.style.transform="translateY(0)";
-  },800);
+setTimeout(()=>{
+img.style.opacity=1;
+img.style.transform="translateY(0)";
+},800);
 }
 
-function typeText(t){
-  typing=true;
-  let el=document.getElementById("text");
-  el.textContent="";
-  let i=0;
-  let inter=setInterval(()=>{
-    if(i<t.length){
-      el.textContent+=t[i++];
-    }else{
-      clearInterval(inter);
-      typing=false;
-    }
-  },35);
-}
-
-function next(){
-  if(typing) return;
-  step++;
-
-  content.innerHTML=`
-  <div class="text-box">
-    <div class="header-name">Hai Nabila Bailey 💕</div>
-    <p id="text"></p>
-  </div>
-  <div id="photo-slot"></div>
-  <button onclick="next()">Lanjut 👉</button>
-  `;
-
-  typeText(lines[step-1]);
-
-  let photo=document.getElementById("mainPhoto");
-  let slot=document.getElementById("photo-slot");
-  if(photo && slot) slot.appendChild(photo);
-
-  if(step===lines.length) showChoice();
-}
-
+/* FALL */
 function startFalling(){
-  fallInterval=setInterval(()=>{
-    let img=document.createElement("img");
-    img.src="foto"+(Math.floor(Math.random()*6)+1)+".jpg";
-    img.className="photo-fall";
-    img.style.left=Math.random()*100+"vw";
-    img.style.width=(Math.random()*60+60)+"px";
-    img.style.animationDuration=(Math.random()*4+6)+"s";
-    fallingLayer.appendChild(img);
-    setTimeout(()=>img.remove(),9000);
-  },1800);
+setInterval(()=>{
+let img=document.createElement("img");
+img.src="foto"+(Math.floor(Math.random()*6)+1)+".jpg";
+img.className="photo-fall";
+img.style.left=Math.random()*100+"vw";
+img.style.width=(Math.random()*60+60)+"px";
+img.style.animationDuration=(Math.random()*4+6)+"s";
+fallingLayer.appendChild(img);
+setTimeout(()=>img.remove(),9000);
+},2000);
 }
 
-function stopFalling(){
-  clearInterval(fallInterval);
-  fallingLayer.innerHTML="";
-}
-
+/* EMOJI */
 function startEmoji(){
-  emojiInterval=setInterval(()=>{
-    let el=document.createElement("div");
-    el.className="emoji-fall";
-    el.innerHTML=Math.random()>0.5?"💕":"💐";
-    el.style.left=Math.random()*100+"vw";
-    el.style.fontSize=(Math.random()*12+16)+"px";
-    el.style.animationDuration=(Math.random()*3+4)+"s";
-    emojiLayer.appendChild(el);
-    setTimeout(()=>el.remove(),7000);
-  },1200);
+setInterval(()=>{
+let el=document.createElement("div");
+el.className="emoji-fall";
+el.innerHTML=Math.random()>0.5?"💕":"💐";
+el.style.left=Math.random()*100+"vw";
+el.style.fontSize=(Math.random()*12+16)+"px";
+el.style.animationDuration=(Math.random()*3+4)+"s";
+emojiLayer.appendChild(el);
+setTimeout(()=>el.remove(),7000);
+},1200);
 }
 
 /* CHOICE */
 function showChoice(){
-  content.innerHTML=`
-  <div class="text-box">
-    <p>so... you feel it too, right? 😏💖</p>
-  </div>
-  <div style="display:flex; gap:12px;">
-    <button onclick="confirmYes()">Yes 💖</button>
-    <button onclick="confirmNo()">Hmm...</button>
-  </div>
-  `;
-}
-
-function confirmYes(){
-  content.innerHTML=`
-  <div class="text-box">
-    <p>
-    are you sure...? 🥹<br><br>
-    because I’m not planning to let you go easily 😏💖
-    </p>
-  </div>
-  <button onclick="finalYes()">Yes 💕</button>
-  <button onclick="showChoice()">Wait...</button>
-  `;
-}
-
-function confirmNo(){
-  content.innerHTML=`
-  <div class="text-box">
-    <p>
-    hmm... I don’t think that’s your real answer 😌<br><br>
-    try again... I’ll wait 🥹💖
-    </p>
-  </div>
-  <button onclick="confirmYes()">Okay... yes 😳</button>
-  `;
+content.innerHTML=`
+<div class="text-box">
+<p>you feel it too, don’t you? 😏💖</p>
+</div>
+<button onclick="finalYes()">Yes 💖</button>
+`;
 }
 
 /* ENDING */
 function finalYes(){
-  stopFalling();
-  startEmoji();
+startEmoji();
 
-  let photo=document.getElementById("mainPhoto");
-  if(photo) photo.remove();
+let photo=document.getElementById("mainPhoto");
+if(photo)photo.remove();
 
-  document.getElementById("lagu1").pause();
-  document.getElementById("lagu2").play().catch(()=>{});
+lagu1.pause();
 
-  content.innerHTML=`<div class="text-box"><p>...</p></div>`;
+setTimeout(()=>{
+lagu2.play().catch(()=>{});
+},1000);
 
-  setTimeout(()=>{
-    content.innerHTML=`
-    <div class="text-box">
-      <p>
-      so... you said yes 😏💖<br><br>
-      I knew it...<br>
-      but still... this means a lot 🤍<br><br>
-      I’ll be real with you,<br>
-      and I’ll stay<br><br>
-      because you’re someone I choose 💖<br><br>
-      so stay with me, okay? 😌
-      </p>
-    </div>
+content.innerHTML=`<div class="text-box"><p>...</p></div>`;
 
-    <button onclick="showMemory()">Kenangan 💖</button>
+setTimeout(()=>{
+content.innerHTML=`
+<div class="text-box">
+<p>
+so... you said yes 😏💖<br><br>
+I knew it... but still, this means a lot 🤍<br><br>
+I’ll be real with you,<br>
+and I’ll stay<br><br>
+because you’re someone I choose 💖<br><br>
+so stay with me, okay? 😌
+</p>
+</div>
 
-    <img src="bouquet.png" class="bouquet">
-    `;
-  },1500);
+<button onclick="showMemory()">Kenangan 💖</button>
+
+<img src="bouquet.png" class="bouquet">
+`;
+},1500);
 }
 
 /* MEMORY */
 function showMemory(){
-  let i=0;
+let i=0;
+content.innerHTML=`
+<div class="memory-wrap">
+<img id="img" class="memory-main">
+</div>
+`;
 
-  content.innerHTML=`
-  <div class="memory-wrap">
-    <img id="img" class="memory-main">
-  </div>
-  `;
+let img=document.getElementById("img");
 
-  let img=document.getElementById("img");
-
-  function nextImg(){
-    if(i<11){
-      img.style.opacity=0;
-      setTimeout(()=>{
-        img.src="kenangan"+(i+1)+".jpg";
-        img.style.opacity=1;
-        i++;
-      },300);
-
-      setTimeout(nextImg,3000);
-    }
-  }
-
-  nextImg();
+function nextImg(){
+if(i<11){
+img.style.opacity=0;
+setTimeout(()=>{
+img.src="kenangan"+(i+1)+".jpg";
+img.style.opacity=1;
+i++;
+},300);
+setTimeout(nextImg,3000);
+}
+}
+nextImg();
 }
 </script>
 
