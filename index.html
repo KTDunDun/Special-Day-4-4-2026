@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Nabila 💖</title>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(#ffdde1, #ee9ca7);
+  color:white;
+  text-align:center;
+  overflow:hidden;
+}
+
+.screen {
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:20px;
+}
+
+h1 { font-size:28px; }
+
+p {
+  font-size:20px;
+  line-height:1.8;
+  max-width:420px;
+  margin:auto;
+}
+
+button {
+  margin-top:25px;
+  padding:12px 25px;
+  border-radius:20px;
+  border:none;
+  background:white;
+  color:#f06292;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.hidden { display:none; }
+
+img {
+  width:240px;
+  border-radius:15px;
+  margin-top:20px;
+  box-shadow:0 0 20px rgba(255,255,255,0.5);
+}
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div class="screen" id="s1">
+  <h1>Hai Nabila Bailey 💖</h1>
+  <button onclick="next(1)">Mulai 👉</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen hidden" id="s2">
+  <p>jujur... aku agak bingung mulai dari mana 😅</p>
+  <button onclick="next(2)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen hidden" id="s3">
+  <p>soalnya ada sesuatu yang gak bisa aku anggap biasa lagi...</p>
+  <button onclick="next(3)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 4 -->
+<div class="screen hidden" id="s4">
+  <p>anehnya... kamu sering muncul di pikiran aku 🥹</p>
+  <button onclick="next(4)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen hidden" id="s5">
+  <p>dan tiap kita ngobrol, selalu ada hal kecil yang bikin aku senyum</p>
+  <img src="foto.jpg">
+  <button onclick="next(5)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 6 -->
+<div class="screen hidden" id="s6">
+  <p>jujur aja... aku gak tau ini bakal jadi apa</p>
+  <button onclick="next(6)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 7 -->
+<div class="screen hidden" id="s7">
+  <p>tapi aku juga gak mau kehilangan kesempatan buat jujur</p>
+  <button onclick="next(7)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 8 -->
+<div class="screen hidden" id="s8">
+  <p>dan tanpa aku sadar... aku mulai jatuh hati sama kamu 💖</p>
+  <button onclick="next(8)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 9 -->
+<div class="screen hidden" id="s9">
+  <p>kalau kamu ngerasa hal yang sama...</p>
+  <button onclick="next(9)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 10 -->
+<div class="screen hidden" id="s10">
+  <p>kamu mau gak kita coba jalanin ini pelan-pelan? 🥹</p>
+  <button onclick="yes()">Mau ❤️</button>
+  <button onclick="kabur(this)">Gak 😈</button>
+</div>
+
+<!-- AUDIO -->
+<audio id="lagu1" src="awal.mp3"></audio>
+<audio id="lagu2" src="ending.mp3"></audio>
+
+<script>
+const lagu1 = document.getElementById("lagu1");
+const lagu2 = document.getElementById("lagu2");
+
+function next(n){
+  document.getElementById("s"+n).classList.add("hidden");
+  document.getElementById("s"+(n+1)).classList.remove("hidden");
+
+  // mulai lagu pertama
+  if(n === 1){
+    lagu1.volume = 0.5;
+    lagu1.play().catch(()=>{});
+  }
+}
+
+function kabur(btn){
+  btn.style.position = "absolute";
+  btn.style.top = Math.random()*70 + "%";
+  btn.style.left = Math.random()*70 + "%";
+}
+
+function yes(){
+
+  // fade lagu pertama
+  let fade = setInterval(()=>{
+    if(lagu1.volume > 0.05){
+      lagu1.volume -= 0.05;
+    } else {
+      clearInterval(fade);
+      lagu1.pause();
+
+      lagu2.volume = 0;
+      lagu2.play().catch(()=>{});
+
+      let fadeIn = setInterval(()=>{
+        if(lagu2.volume < 0.5){
+          lagu2.volume += 0.05;
+        } else clearInterval(fadeIn);
+      },200);
+    }
+  },200);
+
+  document.body.innerHTML = `
+    <div class="screen">
+      <h1>Nabila Bailey 💖</h1>
+
+      <p>makasih udah bilang iya... 🥹❤️</p>
+
+      <img src="bouquet.png">
+
+      <p>
+        mungkin ini sederhana...<br>
+        tapi buat aku, ini berarti banyak 💖<br><br>
+        dan aku pengen jalanin ini sama kamu ✨
+      </p>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
