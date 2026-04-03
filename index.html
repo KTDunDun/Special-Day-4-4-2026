@@ -31,6 +31,7 @@ body{
   transition:0.5s;
 }
 
+/* MAIN */
 .container{
   min-height:100vh;
   display:flex;
@@ -51,18 +52,13 @@ body{
   100%{background-position:0%}
 }
 
+/* TEXT */
 .text-box{
   background:rgba(0,0,0,0.6);
   padding:20px;
   border-radius:16px;
   max-width:320px;
-  margin-bottom:120px;
-  animation:fadeIn 0.8s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(10px);}
-  to{opacity:1; transform:translateY(0);}
+  margin-bottom:160px;
 }
 
 .header-name{
@@ -81,76 +77,44 @@ button{
   color:#ff4d6d;
   font-weight:bold;
   cursor:pointer;
-  box-shadow:0 8px 25px rgba(0,0,0,0.3);
-  transition:0.3s;
-}
-button:hover{transform:scale(1.07);}
-button:active{transform:scale(0.95);}
-
-.yes-btn{
-  background:#ff4d6d;
-  color:white;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
 }
 
-/* FOTO JATUH */
+/* PHOTO MAIN */
+#photo-container{
+  margin-top:10px;
+}
+
+.main-photo{
+  width:230px;
+  border-radius:16px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.8s ease;
+}
+
+/* FALLING PHOTO */
 .photo-fall{
   position:fixed;
   top:-100px;
   z-index:1;
-  opacity:0.5;
+  opacity:0.35;
   pointer-events:none;
   animation:fall linear;
 }
+
 @keyframes fall{
   to{transform:translateY(110vh) rotate(360deg);}
 }
 
-/* FOTO UTAMA */
-.main-photo{
-  width:220px;
-  border-radius:16px;
-  margin-top:18px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.8s;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-}
-
-/* BOUQUET PREMIUM */
+/* BOUQUET */
 .bouquet{
   position:fixed;
   bottom:0;
   left:50%;
   transform:translateX(-50%);
-  width:70%;
-  max-width:420px;
+  width:85%;
+  max-width:520px;
   z-index:3;
-  animation:fadeUp 1s ease, float 4s ease-in-out infinite;
-  filter:drop-shadow(0 12px 28px rgba(255,182,193,0.5));
-}
-
-@keyframes fadeUp{
-  from{opacity:0; transform:translate(-50%,80px);}
-  to{opacity:1; transform:translate(-50%,0);}
-}
-
-@keyframes float{
-  0%{transform:translate(-50%,0);}
-  50%{transform:translate(-50%,-10px);}
-  100%{transform:translate(-50%,0);}
-}
-
-/* MEMORY */
-.memory-main{
-  width:320px;
-  border-radius:16px;
-  transition:0.5s;
 }
 
 /* EMOJI */
@@ -170,33 +134,33 @@ button:active{transform:scale(0.95);}
   <button onclick="startApp()">Tap to Start ✨</button>
 </div>
 
-<div id="main" class="container" style="display:none;"></div>
+<div id="main" class="container" style="display:none;">
+  <div id="content"></div>
+  <div id="photo-container"></div>
+</div>
 
 <audio id="lagu1" src="awal.mp3"></audio>
 <audio id="lagu2" src="ending.mp3"></audio>
 
 <script>
+const content=document.getElementById("content");
+const photoContainer=document.getElementById("photo-container");
 const main=document.getElementById("main");
 const startScreen=document.getElementById("startScreen");
 const lagu1=document.getElementById("lagu1");
 const lagu2=document.getElementById("lagu2");
 
-let step=0;
+let step=0, fallInterval;
 
 const lines=[
 "jujur... aku mikir lama buat ini 😅",
 "ini bukan hal kecil buat aku",
-"",
 "setiap kita ngobrol...",
 "aku selalu ngerasa nyaman 🥹",
-"",
 "dan entah sejak kapan...",
 "kamu jadi orang yang sering aku pikirin",
-"",
 "I’ve fallen for you... more than I planned 💖",
-"",
 "aku serius sama perasaan ini",
-"",
 "mau gak kamu jadi bagian dari cerita ini? 🥹"
 ];
 
@@ -206,156 +170,117 @@ const memoryPhotos=[
 "kenangan9.jpg","kenangan10.jpg","kenangan11.jpg"
 ];
 
+/* START */
 function startApp(){
   startScreen.style.opacity="0";
   setTimeout(()=>{
     startScreen.style.display="none";
     main.style.display="flex";
 
-    lagu1.volume=0;
-    lagu1.play().then(()=>{
-      let v=0;
-      let f=setInterval(()=>{
-        if(v<0.6){v+=0.05; lagu1.volume=v;}
-        else clearInterval(f);
-      },120);
-    });
-
+    lagu1.play().catch(()=>{});
     setTimeout(showIntro,1800);
   },500);
 }
 
+/* INTRO */
 function showIntro(){
-  main.innerHTML=`
+  content.innerHTML=`
   <div class="text-box">
-    <p>
-    hey... 🥹<br><br>
-    are you ready to know<br>
-    what this really means...? 💖
-    </p>
+  <p>hey... 🥹<br><br>are you ready to know what this really means...? 💖</p>
   </div>
-  <button onclick="showMade()">I'm ready 💖</button>
-  `;
+  <button onclick="showMade()">I'm ready 💖</button>`;
 }
 
 function showMade(){
-  main.innerHTML=`
+  content.innerHTML=`
   <div class="text-box">
-    <p>
-    I made this for you... 🥹<br><br>
-    because there are things<br>
-    I’ve been wanting to say... 💖
-    </p>
+  <p>I made this for you... 🥹<br><br>because there are things I’ve been wanting to say... 💖</p>
   </div>
-  <button onclick="startStory()">Continue 💖</button>
-  `;
+  <button onclick="startStory()">Continue 💖</button>`;
 }
 
-function startStory(){step=0; next();}
+/* STORY */
+function startStory(){
+  step=0;
+  showPhoto();
+  startFalling();
+  next();
+}
 
-function next(){
-  step++;
-
-  main.innerHTML=`
-  <div class="text-box">
-    <div class="header-name">Hai Nabila Bailey 💕</div>
-    <p id="text"></p>
-  </div>
-  <button onclick="next()">Lanjut 👉</button>
-  `;
-
-  typeText(lines[step-1]);
-
-  if(step===3){
+function showPhoto(){
+  if(!document.getElementById("mainPhoto")){
     let img=document.createElement("img");
     img.src="foto.jpg";
+    img.id="mainPhoto";
     img.className="main-photo";
-    document.querySelector(".text-box").appendChild(img);
+    photoContainer.appendChild(img);
 
     setTimeout(()=>{
       img.style.opacity=1;
       img.style.transform="translateY(0)";
     },800);
   }
+}
+
+function next(){
+  step++;
+  content.innerHTML=`
+  <div class="text-box">
+    <div class="header-name">Hai Nabila Bailey 💕</div>
+    <p>${lines[step-1]}</p>
+  </div>
+  <button onclick="next()">Lanjut 👉</button>`;
 
   if(step===lines.length) showChoice();
 }
 
-function typeText(t){
-  let el=document.getElementById("text");
-  el.textContent="";
-  let i=0;
-  let inter=setInterval(()=>{
-    if(i<t.length){el.textContent+=t[i++];}
-    else clearInterval(inter);
-  },35);
+/* FALLING */
+function startFalling(){
+  fallInterval=setInterval(()=>{
+    let img=document.createElement("img");
+    img.src="foto"+(Math.floor(Math.random()*6)+1)+".jpg";
+    img.className="photo-fall";
+    img.style.left=Math.random()*100+"vw";
+    img.style.width=(Math.random()*40+80)+"px";
+    img.style.animationDuration=(Math.random()*3+6)+"s";
+    document.body.appendChild(img);
+    setTimeout(()=>img.remove(),8000);
+  },2000);
 }
 
+function stopFalling(){
+  clearInterval(fallInterval);
+}
+
+/* CHOICE */
 function showChoice(){
-  main.innerHTML=`
+  content.innerHTML=`
   <div class="text-box">
     <p>jadi... mau gak kamu sama aku? 🥹</p>
   </div>
-  <button class="yes-btn" onclick="yes()">Mau ❤️</button>
-  <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">Tidak 😢</button>
-  `;
+  <button onclick="finalYes()">Mau ❤️</button>`;
 }
 
-function moveNo(){
-  let b=document.getElementById("noBtn");
-  b.style.position="fixed";
-  b.style.left=Math.random()*80+"vw";
-  b.style.top=Math.random()*80+"vh";
-}
-
-function yes(){
-  main.innerHTML=`
-  <div class="text-box">
-    <p>are you really sure...? 🥹💖</p>
-  </div>
-  <button onclick="finalYes()">Yes 💖</button>
-  `;
-}
-
+/* FINAL */
 function finalYes(){
+  stopFalling();
   lagu1.pause();
-  lagu2.play();
+  lagu2.play().catch(()=>{});
 
   setTimeout(()=>{
-    startLoveRain();
-  },500);
-
-  setTimeout(()=>{
-    main.innerHTML=`
+    content.innerHTML=`
     <div class="text-box">
-      <p>
-      thank you for choosing me... 🥹💖<br><br>
-      I’ll always try my best for you 🤍<br><br>
-      I love you more than you could ever imagine 💕
-      </p>
+    <p>thank you for choosing me... 🥹💖<br><br>I love you more than you could ever imagine 💕</p>
     </div>
     <button onclick="showMemory()">Kenangan 💖</button>
-    <img src="bouquet.png" class="bouquet">
-    `;
-  },500);
+    <img src="bouquet.png" class="bouquet">`;
+  },600);
 }
 
-function startLoveRain(){
-  setInterval(()=>{
-    let el=document.createElement("div");
-    el.className="fall";
-    el.innerHTML=Math.random()>0.5?"💕":"💐";
-    el.style.left=Math.random()*100+"vw";
-    el.style.fontSize="20px";
-    el.style.animationDuration="4s";
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),5000);
-  },400);
-}
-
+/* MEMORY */
 function showMemory(){
   let i=0;
-  main.innerHTML=`<img id="img" class="memory-main">`;
+  content.innerHTML=`<img id="img" class="main-photo">`;
   let img=document.getElementById("img");
 
   function nextImg(){
@@ -370,18 +295,6 @@ function showMemory(){
   }
   nextImg();
 }
-
-setInterval(()=>{
-  let img=document.createElement("img");
-  img.src="foto"+(Math.floor(Math.random()*6)+1)+".jpg";
-  img.className="photo-fall";
-  img.style.left=Math.random()*100+"vw";
-  img.style.width="60px";
-  img.style.animationDuration="6s";
-  document.body.appendChild(img);
-  setTimeout(()=>img.remove(),7000);
-},3000);
-
 </script>
 
 </body>
