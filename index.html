@@ -8,33 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-html,body{
+body{
   margin:0;
-  padding:0;
-  height:100%;
   font-family:'Poppins',sans-serif;
-  overflow:hidden;
   text-align:center;
   color:white;
-}
-
-body{
   background:linear-gradient(-45deg,#ff4d6d,#c9184a,#a4133c,#800f2f);
   background-size:400% 400%;
-  animation:bg 15s ease infinite;
+  animation:bg 15s infinite;
 }
 @keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.45);
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
 }
 
 .container{
@@ -44,23 +30,13 @@ body::after{
   justify-content:center;
   align-items:center;
   padding:20px;
-  z-index:2;
-  position:relative;
 }
 
 .text-box{
   background:rgba(0,0,0,0.55);
-  padding:22px;
-  border-radius:18px;
-  backdrop-filter:blur(6px);
+  padding:20px;
+  border-radius:16px;
   max-width:320px;
-}
-
-h1{font-size:30px;font-weight:700;}
-p{font-size:20px;line-height:1.9;font-weight:300;}
-
-#text{
-  transition:opacity 0.3s ease;
 }
 
 button{
@@ -71,62 +47,29 @@ button{
   background:white;
   color:#ff4d6d;
   font-weight:bold;
-  width:80%;
-  opacity:0;
-  transition:0.3s;
-}
-
-/* FOTO */
-.center-img{
-  width:240px;
-  border-radius:18px;
-  margin-top:20px;
-  animation:fadeIn 1s ease;
-}
-
-.memory-container{
-  display:flex;
-  gap:12px;
-  margin-top:15px;
-  overflow:hidden;
-  max-width:320px;
-}
-
-.memory-img{
-  width:140px;
-  border-radius:12px;
-  animation:slideIn 0.5s ease;
-  transition:transform 0.3s;
-}
-.memory-img:hover{transform:scale(1.05);}
-
-@keyframes slideIn{
-  from{transform:translateX(60px);opacity:0}
-  to{transform:translateX(0);opacity:1}
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
 }
 
 /* FOTO JATUH */
 .photo-fall{
   position:fixed;
   top:-100px;
-  opacity:0.85;
   animation:fall linear;
-  box-shadow:0 8px 25px rgba(0,0,0,0.4);
 }
 @keyframes fall{
   to{transform:translateY(110vh) rotate(360deg);}
 }
 
-/* LOVE */
-.fall{
-  position:fixed;
-  top:-10px;
-  animation:fall linear;
+/* GALERI */
+.gallery{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  padding:20px;
+}
+.gallery img{
+  width:120px;
+  border-radius:12px;
 }
 </style>
 </head>
@@ -138,10 +81,7 @@ button{
     <h1>Hai Nabila Bailey 💖</h1>
     <p id="text"></p>
   </div>
-
-  <div id="memoryContainer" class="memory-container"></div>
-
-  <button id="btn" onclick="next()">Lanjut 👉</button>
+  <button onclick="next()">Lanjut 👉</button>
 </div>
 
 <audio id="lagu1" src="awal.mp3"></audio>
@@ -149,21 +89,19 @@ button{
 
 <script>
 const text=document.getElementById("text");
-const btn=document.getElementById("btn");
 const lagu1=document.getElementById("lagu1");
 const lagu2=document.getElementById("lagu2");
 
 let step=0;
 let isTyping=false;
 
-/* FOTO */
 const fallingPhotos=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
+
 const memoryPhotos=[
 "kenangan1.jpg","kenangan2.jpg","kenangan3.jpg","kenangan4.jpg","kenangan5.jpg",
 "kenangan6.jpg","kenangan7.jpg","kenangan8.jpg","kenangan9.jpg","kenangan10.jpg","kenangan11.jpg"
 ];
 
-/* TEKS FINAL */
 const lines=[
 "jujur... aku sempet mikir lama sebelum bikin ini 😅",
 "soalnya ini bukan hal kecil buat aku...",
@@ -175,10 +113,9 @@ const lines=[
 "",
 "setiap kita ngobrol...",
 "selalu ada sesuatu yang bikin aku nyaman 🥹",
-"hal kecil, tapi cukup buat bikin semuanya terasa ringan",
 "",
 "dan entah sejak kapan...",
-"kamu jadi seseorang yang sering banget aku pikirin",
+"kamu jadi seseorang yang sering aku pikirin",
 "(entah kenapa... kamu selalu berhasil muncul di pikiranku, dan anehnya... aku gak pernah keberatan dengan itu 🥹)",
 "",
 "dan dari situ aku mulai sadar...",
@@ -186,9 +123,6 @@ const lines=[
 "",
 "and somewhere along the way...",
 "I’ve fallen for you... more than I planned 💖",
-"",
-"semua momen kecil yang kita lewatin...",
-"pelan-pelan jadi sesuatu yang berarti buat aku",
 "",
 "dan semakin lama...",
 "aku makin yakin sama apa yang aku rasain",
@@ -198,23 +132,16 @@ const lines=[
 "aku gak mau maksa kamu",
 "aku cuma pengen jujur sama apa yang aku rasain",
 "",
-"dan mungkin ini pertama kalinya aku seberani ini untuk seseorang",
-"",
 "and honestly... I choose you 💖",
 "",
 "mau gak kamu jalanin ini sama aku? 🥹"
 ];
 
-/* TYPE */
 function typeText(teks){
-  if(teks===""){
+  if(teks.trim()===""){
     text.innerHTML="<br>";
-    isTyping=false;
     return;
   }
-
-  text.style.opacity=0;
-  setTimeout(()=>text.style.opacity=1,100);
 
   text.innerHTML="";
   let i=0;
@@ -225,124 +152,113 @@ function typeText(teks){
       text.innerHTML+=teks[i++];
     }else{
       clearInterval(interval);
-      setTimeout(()=>isTyping=false,300);
+      isTyping=false;
     }
   },35);
 }
 
-/* MEMORY */
-function showMemory(index){
-  let img=document.createElement("img");
-  img.src=memoryPhotos[index];
-  img.className="memory-img";
-
-  let c=document.getElementById("memoryContainer");
-  c.appendChild(img);
-
-  let all=c.querySelectorAll(".memory-img");
-  if(all.length>3){
-    all[0].style.opacity=0;
-    setTimeout(()=>all[0].remove(),300);
-  }
-}
-
-/* NEXT */
 function next(){
   if(isTyping) return;
 
   step++;
 
   if(step===1){
-    setTimeout(()=>{
-      lagu1.currentTime=25;
-      lagu1.volume=0.5;
-      lagu1.play().catch(()=>{});
-    },500);
+    lagu1.currentTime=25;
+    lagu1.play().catch(()=>{});
   }
 
   if(step<=lines.length){
     typeText(lines[step-1]);
   }
 
-  if(step===4){
-    let img=document.createElement("img");
-    img.src="foto.jpg";
-    img.className="center-img";
-    document.getElementById("main").appendChild(img);
-  }
-
-  let memoryStart=6;
-  if(step>=memoryStart && step<memoryStart+memoryPhotos.length){
-    showMemory(step-memoryStart);
-  }
-
   if(step===lines.length){
-    btn.style.display="none";
+    showEnding();
+  }
+}
 
-    let yes=document.createElement("button");
-    yes.innerHTML="Mau ❤️";
-    yes.style.opacity=0;
-    setTimeout(()=>yes.style.opacity=1,100);
-    yes.onclick=yesClick;
+/* ENDING */
+function showEnding(){
+  lagu1.pause();
+  setTimeout(()=>{ lagu2.play().catch(()=>{}); },500);
 
-    document.getElementById("main").appendChild(yes);
+  document.getElementById("main").innerHTML=`
+  <div class="text-box">
+    <h1>💖</h1>
+    <p>
+      thank you for reading this... 🥹<br><br>
+      I really mean every single word 💖
+    </p>
+  </div>
+  <button onclick="showMemorySequence()">Lihat Kenangan 💖</button>
+  `;
+}
+
+/* CINEMATIC MEMORY */
+function showMemorySequence(){
+  let index=0;
+
+  document.getElementById("main").innerHTML=`
+  <div class="container">
+    <img id="memoryImg" style="width:220px;border-radius:16px;">
+    <p style="margin-top:15px;">Kenangan kita... 💖</p>
+  </div>
+  `;
+
+  let img=document.getElementById("memoryImg");
+
+  function nextImage(){
+    if(index < memoryPhotos.length){
+      img.src = memoryPhotos[index];
+      index++;
+      setTimeout(nextImage,1500);
+    } else {
+      showAllButton();
+    }
   }
 
-  let delay=(step>=memoryStart)?2500:1500;
-  if(step===lines.length-1) delay=3000;
+  nextImage();
+}
 
-  setTimeout(()=>isTyping=false,delay);
+/* BUTTON GRID */
+function showAllButton(){
+  let btn=document.createElement("button");
+  btn.innerHTML="Lihat Semua Kenangan 💖";
+  btn.onclick=showGallery;
+
+  document.querySelector(".container").appendChild(btn);
+}
+
+/* GRID */
+function showGallery(){
+  document.getElementById("main").innerHTML=`
+  <h1>Kenangan Kita 💖</h1>
+  <div class="gallery"></div>
+  `;
+
+  let g=document.querySelector(".gallery");
+
+  memoryPhotos.forEach(src=>{
+    let img=document.createElement("img");
+    img.src=src;
+    g.appendChild(img);
+  });
 }
 
 /* FOTO JATUH */
-let fallInterval=setInterval(()=>{
+setInterval(()=>{
   let img=document.createElement("img");
   img.src=fallingPhotos[Math.floor(Math.random()*fallingPhotos.length)];
   img.className="photo-fall";
   img.style.left=Math.random()*100+"vw";
-  img.style.width=(Math.random()*40+80)+"px";
-  img.style.animationDuration=(Math.random()*3+4)+"s";
-  img.style.transform="rotate("+Math.random()*360+"deg)";
-  img.style.filter="brightness("+(Math.random()*0.3+0.8)+")";
+  img.style.width="80px";
+  img.style.animationDuration="5s";
   document.body.appendChild(img);
   setTimeout(()=>img.remove(),6000);
-},1500);
-
-/* YES */
-function yesClick(){
-  clearInterval(fallInterval);
-
-  setInterval(()=>{
-    let el=document.createElement("div");
-    el.className="fall";
-    el.innerHTML=Math.random()>0.5?"💕":"💐";
-    el.style.left=Math.random()*100+"vw";
-    el.style.fontSize=(Math.random()*20+15)+"px";
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),7000);
-  },300);
-
-  document.body.innerHTML=`
-  <div class="container">
-    <div class="text-box">
-      <h1>Nabila Bailey 💖</h1>
-      <p>
-        thank you for saying yes... 🥹❤️<br><br>
-        I really mean every single word 🤍<br><br>
-        I’ll always try my best for you 💖<br><br>
-        let’s take this slowly… together ✨<br><br>
-        and I’m really glad… it’s you 💖
-      </p>
-    </div>
-    <img src="bouquet.png">
-  </div>
-  `;
-}
+},2000);
 
 /* AUTO START */
 typeText(lines[0]);
 step=1;
-btn.style.opacity=1;
 </script>
 
 </body>
