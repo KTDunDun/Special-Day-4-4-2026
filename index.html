@@ -15,7 +15,19 @@ body{
   overflow:hidden;
 }
 
-/* ===== LAYER SYSTEM ===== */
+/* INTRO */
+#intro{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:999;
+}
+
+/* BG */
 #bg-layer{
   position:fixed;
   inset:0;
@@ -31,38 +43,23 @@ body{
   100%{background-position:0% 50%;}
 }
 
-#falling-layer{
+#falling-layer, #emoji-layer{
   position:fixed;
   inset:0;
-  z-index:1;
   pointer-events:none;
 }
+#falling-layer{z-index:1;}
+#emoji-layer{z-index:2;}
 
-#emoji-layer{
-  position:fixed;
-  inset:0;
-  z-index:2;
-  pointer-events:none;
-}
-
-/* ===== MAIN ===== */
 .container{
   position:relative;
   z-index:3;
-
-  max-width:520px;
-  margin:auto;
   min-height:100vh;
-
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   padding:20px;
-
-  border-radius:20px;
-  box-shadow:0 0 80px rgba(255,105,135,0.3);
-  backdrop-filter:blur(6px);
 }
 
 /* TEXT */
@@ -70,47 +67,42 @@ body{
   background:rgba(0,0,0,0.6);
   padding:18px;
   border-radius:16px;
-  max-width:100%;
-  margin-bottom:10px;
-  font-size:17px;
+  width:90%;
+  font-size:16px;
   line-height:1.6;
 }
 
 .header-name{
-  font-size:16px;
+  font-size:15px;
   opacity:0.8;
 }
 
-/* BUTTON */
 button{
-  padding:12px 20px;
+  padding:12px 18px;
   border:none;
   border-radius:25px;
   background:white;
   color:#ff4d6d;
   font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
+  margin-top:12px;
 }
 
-/* FOTO SLOT */
+/* FOTO */
 #photo-slot{
   display:flex;
   justify-content:center;
   margin:10px 0;
 }
 
-/* FOTO UTAMA */
 .main-photo{
-  width:260px;
+  width:70%;
+  max-width:260px;
   border-radius:16px;
   opacity:0;
   transform:translateY(20px);
-  transition:0.8s ease;
-  box-shadow:0 10px 40px rgba(255,182,193,0.4);
+  transition:0.8s;
 }
 
-/* FOTO JATUH */
 .photo-fall{
   position:absolute;
   top:-100px;
@@ -118,16 +110,15 @@ button{
   opacity:0.35;
 }
 
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(360deg);}
-}
-
-/* EMOJI */
 .emoji-fall{
   position:absolute;
   top:-30px;
   animation:fall linear;
   opacity:0.6;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* BOUQUET */
@@ -137,7 +128,7 @@ button{
   bottom:-100px;
   transform:translateX(-50%);
   width:110%;
-  height:60vh;
+  height:55vh;
   object-fit:contain;
   z-index:4;
 }
@@ -151,22 +142,26 @@ button{
 }
 
 .memory-main{
-  width:90vw;
-  max-width:420px;
-  border-radius:18px;
+  width:90%;
+  border-radius:16px;
   opacity:0;
-  transition:0.8s ease;
+  transition:0.8s;
 }
 </style>
 </head>
 
 <body>
 
+<div id="intro">
+  <h2>hey... 🥹</h2>
+  <button onclick="startApp()">tap slowly 💖</button>
+</div>
+
 <div id="bg-layer"></div>
 <div id="falling-layer"></div>
 <div id="emoji-layer"></div>
 
-<div id="main" class="container">
+<div id="main" class="container" style="display:none;">
   <div id="content"></div>
 </div>
 
@@ -180,45 +175,31 @@ const emojiLayer=document.getElementById("emoji-layer");
 
 let step=0, typing=false, fallInterval, emojiInterval;
 
-const lines=[
-"jujur... aku mikir lama buat ini 😅",
-"ini bukan hal kecil buat aku",
+const lines = [
+"hey... can you stay for a moment? 🥹",
+"aku bikin ini bukan karena iseng...",
+"but because there’s something I really want you to know",
 "setiap kita ngobrol...",
-"aku selalu ngerasa nyaman 🥹",
-"dan entah sejak kapan...",
+"aku selalu ngerasa nyaman banget",
+"and somehow... I keep looking forward to talking to you",
+"entah sejak kapan...",
 "kamu jadi orang yang sering aku pikirin",
-"I’ve fallen for you... more than I planned 💖",
-"aku serius sama perasaan ini",
-"mau gak kamu jadi bagian dari cerita ini? 🥹"
+"aku gak tau ini mulai dari kapan...",
+"but I know this feeling is real",
+"I think... I really like you 💖",
+"not just biasa...",
+"but something deeper than that 🥹"
 ];
 
-const memoryPhotos=[
-"kenangan1.jpg","kenangan2.jpg","kenangan3.jpg",
-"kenangan4.jpg","kenangan5.jpg","kenangan6.jpg",
-"kenangan7.jpg","kenangan8.jpg","kenangan9.jpg",
-"kenangan10.jpg","kenangan11.jpg"
-];
+function startApp(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("main").style.display="flex";
 
-startStory();
+  document.getElementById("lagu1").play().catch(()=>{});
 
-/* ===== TYPE ===== */
-function typeText(t){
-  typing=true;
-  let el=document.getElementById("text");
-  el.textContent="";
-  let i=0;
-
-  let inter=setInterval(()=>{
-    if(i<t.length){
-      el.textContent+=t[i++];
-    }else{
-      clearInterval(inter);
-      typing=false;
-    }
-  },35);
+  setTimeout(startStory,1800);
 }
 
-/* ===== STORY ===== */
 function startStory(){
   createPhoto();
   startFalling();
@@ -236,6 +217,21 @@ function createPhoto(){
     img.style.opacity=1;
     img.style.transform="translateY(0)";
   },800);
+}
+
+function typeText(t){
+  typing=true;
+  let el=document.getElementById("text");
+  el.textContent="";
+  let i=0;
+  let inter=setInterval(()=>{
+    if(i<t.length){
+      el.textContent+=t[i++];
+    }else{
+      clearInterval(inter);
+      typing=false;
+    }
+  },35);
 }
 
 function next(){
@@ -262,7 +258,6 @@ function next(){
   if(step===lines.length) showChoice();
 }
 
-/* ===== FALLING ===== */
 function startFalling(){
   fallInterval=setInterval(()=>{
     let img=document.createElement("img");
@@ -281,7 +276,6 @@ function stopFalling(){
   fallingLayer.innerHTML="";
 }
 
-/* ===== EMOJI ===== */
 function startEmoji(){
   emojiInterval=setInterval(()=>{
     let el=document.createElement("div");
@@ -295,11 +289,10 @@ function startEmoji(){
   },1200);
 }
 
-/* ===== CHOICE ===== */
 function showChoice(){
   content.innerHTML=`
   <div class="text-box">
-    <p>mau gak kamu sama aku? 🥹</p>
+    <p>so... would you like to be with me? 🥹💖</p>
   </div>
   <div id="photo-slot"></div>
   <button onclick="finalYes()">Mau ❤️</button>
@@ -310,7 +303,6 @@ function showChoice(){
   if(photo && slot) slot.appendChild(photo);
 }
 
-/* ===== ENDING ===== */
 function finalYes(){
   stopFalling();
   startEmoji();
@@ -326,9 +318,21 @@ function finalYes(){
     <div class="text-box">
       <p>
       thank you for choosing me... 🥹💖<br><br>
-      I still can’t believe you said yes...<br><br>
-      I will always try my best for you 🤍<br><br>
-      and in every lifetime... I would still choose you 💕
+
+      jujur... I didn’t expect this moment to feel this real 🤍<br><br>
+
+      maybe I’m not perfect,<br>
+      but my feelings for you are real 💖<br><br>
+
+      I’ll try my best for you,<br>
+      not only in good times,<br>
+      but also when things get hard 🥹<br><br>
+
+      because to me...<br>
+      you’re someone truly special<br><br>
+
+      and if I had to choose again...<br>
+      I would still choose you 💕
       </p>
     </div>
 
@@ -339,7 +343,6 @@ function finalYes(){
   },1000);
 }
 
-/* ===== MEMORY ===== */
 function showMemory(){
   let i=0;
 
@@ -352,12 +355,12 @@ function showMemory(){
   let img=document.getElementById("img");
 
   function nextImg(){
-    if(i<memoryPhotos.length){
+    if(i<11){
       img.style.opacity=0;
-
       setTimeout(()=>{
-        img.src=memoryPhotos[i++];
+        img.src="kenangan"+(i+1)+".jpg";
         img.style.opacity=1;
+        i++;
       },300);
 
       setTimeout(nextImg,3000);
