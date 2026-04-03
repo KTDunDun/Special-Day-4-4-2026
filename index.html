@@ -52,7 +52,6 @@ body{
   100%{background-position:0%}
 }
 
-/* TEXT */
 .text-box{
   background:rgba(0,0,0,0.6);
   padding:20px;
@@ -67,7 +66,6 @@ body{
   margin-bottom:10px;
 }
 
-/* BUTTON */
 button{
   margin-top:12px;
   padding:12px 18px;
@@ -81,6 +79,8 @@ button{
 
 /* FOTO UTAMA */
 #photo-container{
+  display:flex;
+  justify-content:center;
   margin-top:10px;
 }
 
@@ -115,14 +115,13 @@ button{
   width:85%;
   max-width:520px;
   z-index:3;
+  animation:float 4s ease-in-out infinite;
 }
 
-/* EMOJI */
-.fall{
-  position:fixed;
-  top:-20px;
-  z-index:5;
-  animation:fall linear;
+@keyframes float{
+  0%{transform:translate(-50%,0);}
+  50%{transform:translate(-50%,-10px);}
+  100%{transform:translate(-50%,0);}
 }
 </style>
 </head>
@@ -226,16 +225,29 @@ function showPhoto(){
 }
 
 /* TYPEWRITER */
+function typeText(t){
+  let el=document.getElementById("text");
+  el.textContent="";
+  let i=0;
+  let inter=setInterval(()=>{
+    if(i<t.length){
+      el.textContent+=t[i++];
+    } else clearInterval(inter);
+  },35);
+}
+
 function next(){
   step++;
 
   content.innerHTML=`
   <div class="text-box">
     <div class="header-name">Hai Nabila Bailey 💕</div>
-    <p>${lines[step-1]}</p>
+    <p id="text"></p>
   </div>
   <button onclick="next()">Lanjut 👉</button>
   `;
+
+  typeText(lines[step-1]);
 
   if(step===lines.length) showChoice();
 }
@@ -252,7 +264,7 @@ function startFalling(){
 
     document.body.appendChild(img);
     setTimeout(()=>img.remove(),8000);
-  },2000);
+  },3000);
 }
 
 function stopFalling(){
@@ -286,7 +298,7 @@ function finalYes(){
     <button onclick="showMemory()">Kenangan 💖</button>
     <img src="bouquet.png" class="bouquet">
     `;
-  },600);
+  },900);
 }
 
 /* MEMORY */
