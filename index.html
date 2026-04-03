@@ -23,9 +23,9 @@ body{
   width:100%;
   height:100%;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
   background:black;
   z-index:999;
   transition:0.5s;
@@ -40,7 +40,7 @@ body{
   padding:20px;
   background:linear-gradient(-45deg,#ff4d6d,#c9184a,#a4133c,#800f2f);
   background-size:400% 400%;
-  animation:bg 15s infinite;
+  animation:bg 15s ease-in-out infinite;
   position:relative;
   z-index:2;
 }
@@ -56,8 +56,22 @@ body{
   padding:20px;
   border-radius:16px;
   max-width:320px;
+  margin-bottom:120px;
+  animation:fadeIn 0.8s ease;
 }
 
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.header-name{
+  font-size:16px;
+  opacity:0.8;
+  margin-bottom:10px;
+}
+
+/* BUTTON */
 button{
   margin-top:12px;
   padding:12px 18px;
@@ -67,9 +81,12 @@ button{
   color:#ff4d6d;
   font-weight:bold;
   cursor:pointer;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+  transition:0.3s;
 }
+button:hover{transform:scale(1.07);}
+button:active{transform:scale(0.95);}
 
-/* YES BUTTON */
 .yes-btn{
   background:#ff4d6d;
   color:white;
@@ -81,7 +98,7 @@ button{
   100%{transform:scale(1);}
 }
 
-/* FOTO BACKGROUND */
+/* FOTO JATUH */
 .photo-fall{
   position:fixed;
   top:-100px;
@@ -94,6 +111,48 @@ button{
   to{transform:translateY(110vh) rotate(360deg);}
 }
 
+/* FOTO UTAMA */
+.main-photo{
+  width:220px;
+  border-radius:16px;
+  margin-top:18px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.8s;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* BOUQUET PREMIUM */
+.bouquet{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:70%;
+  max-width:420px;
+  z-index:3;
+  animation:fadeUp 1s ease, float 4s ease-in-out infinite;
+  filter:drop-shadow(0 12px 28px rgba(255,182,193,0.5));
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translate(-50%,80px);}
+  to{opacity:1; transform:translate(-50%,0);}
+}
+
+@keyframes float{
+  0%{transform:translate(-50%,0);}
+  50%{transform:translate(-50%,-10px);}
+  100%{transform:translate(-50%,0);}
+}
+
+/* MEMORY */
+.memory-main{
+  width:320px;
+  border-radius:16px;
+  transition:0.5s;
+}
+
 /* EMOJI */
 .fall{
   position:fixed;
@@ -101,45 +160,17 @@ button{
   z-index:5;
   animation:fall linear;
 }
-
-/* MEMORY */
-.memory-main{
-  width:320px;
-  border-radius:16px;
-  transition:opacity 0.5s;
-}
-
-/* BOUQUET */
-.bouquet{
-  width:220px;
-  margin-top:25px;
-  position:relative;
-  z-index:3;
-}
-
-/* GALLERY */
-.gallery{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
-}
-.gallery img{
-  width:140px;
-  border-radius:12px;
-}
 </style>
 </head>
 
 <body>
 
 <div id="startScreen">
-  <h2>for you 💖</h2>
+  <h2>just... take a moment 🥹</h2>
   <button onclick="startApp()">Tap to Start ✨</button>
 </div>
 
-<div id="main" class="container" style="display:none;">
-</div>
+<div id="main" class="container" style="display:none;"></div>
 
 <audio id="lagu1" src="awal.mp3"></audio>
 <audio id="lagu2" src="ending.mp3"></audio>
@@ -150,7 +181,7 @@ const startScreen=document.getElementById("startScreen");
 const lagu1=document.getElementById("lagu1");
 const lagu2=document.getElementById("lagu2");
 
-let step=0,isTyping=false;
+let step=0;
 
 const lines=[
 "jujur... aku mikir lama buat ini 😅",
@@ -162,7 +193,6 @@ const lines=[
 "dan entah sejak kapan...",
 "kamu jadi orang yang sering aku pikirin",
 "",
-"and somewhere along the way...",
 "I’ve fallen for you... more than I planned 💖",
 "",
 "aku serius sama perasaan ini",
@@ -176,10 +206,8 @@ const memoryPhotos=[
 "kenangan9.jpg","kenangan10.jpg","kenangan11.jpg"
 ];
 
-/* START */
 function startApp(){
   startScreen.style.opacity="0";
-
   setTimeout(()=>{
     startScreen.style.display="none";
     main.style.display="flex";
@@ -194,17 +222,14 @@ function startApp(){
     });
 
     setTimeout(showIntro,1800);
-
   },500);
 }
 
-/* INTRO */
 function showIntro(){
   main.innerHTML=`
   <div class="text-box">
     <p>
     hey... 🥹<br><br>
-    aku bikin ini dengan banyak rasa...<br><br>
     are you ready to know<br>
     what this really means...? 💖
     </p>
@@ -213,7 +238,6 @@ function showIntro(){
   `;
 }
 
-/* MADE */
 function showMade(){
   main.innerHTML=`
   <div class="text-box">
@@ -227,28 +251,14 @@ function showMade(){
   `;
 }
 
-/* STORY */
-function startStory(){
-  step=0;
-  next();
-}
-
-function typeText(t){
-  let el=document.getElementById("text");
-  el.textContent="";
-  let i=0;
-  let inter=setInterval(()=>{
-    if(i<t.length){
-      el.textContent+=t[i++];
-    }else clearInterval(inter);
-  },35);
-}
+function startStory(){step=0; next();}
 
 function next(){
   step++;
 
   main.innerHTML=`
   <div class="text-box">
+    <div class="header-name">Hai Nabila Bailey 💕</div>
     <p id="text"></p>
   </div>
   <button onclick="next()">Lanjut 👉</button>
@@ -259,15 +269,28 @@ function next(){
   if(step===3){
     let img=document.createElement("img");
     img.src="foto.jpg";
-    img.style.width="230px";
-    img.style.borderRadius="16px";
-    main.appendChild(img);
+    img.className="main-photo";
+    document.querySelector(".text-box").appendChild(img);
+
+    setTimeout(()=>{
+      img.style.opacity=1;
+      img.style.transform="translateY(0)";
+    },800);
   }
 
   if(step===lines.length) showChoice();
 }
 
-/* CHOICE */
+function typeText(t){
+  let el=document.getElementById("text");
+  el.textContent="";
+  let i=0;
+  let inter=setInterval(()=>{
+    if(i<t.length){el.textContent+=t[i++];}
+    else clearInterval(inter);
+  },35);
+}
+
 function showChoice(){
   main.innerHTML=`
   <div class="text-box">
@@ -285,40 +308,38 @@ function moveNo(){
   b.style.top=Math.random()*80+"vh";
 }
 
-/* YES */
 function yes(){
   main.innerHTML=`
   <div class="text-box">
-    <p>
-    are you really sure...? 🥹💖<br><br>
-    I’m not letting you go easily 🤍
-    </p>
+    <p>are you really sure...? 🥹💖</p>
   </div>
   <button onclick="finalYes()">Yes 💖</button>
   `;
 }
 
-/* FINAL */
 function finalYes(){
   lagu1.pause();
   lagu2.play();
 
-  startLoveRain();
+  setTimeout(()=>{
+    startLoveRain();
+  },500);
 
-  main.innerHTML=`
-  <div class="text-box">
-    <p>
-    thank you for choosing me... 🥹💖<br><br>
-    I’ll always try my best for you 🤍<br><br>
-    I love you more than you could ever imagine 💕
-    </p>
-  </div>
-  <button onclick="showMemory()">Kenangan 💖</button>
-  <img src="bouquet.png" class="bouquet">
-  `;
+  setTimeout(()=>{
+    main.innerHTML=`
+    <div class="text-box">
+      <p>
+      thank you for choosing me... 🥹💖<br><br>
+      I’ll always try my best for you 🤍<br><br>
+      I love you more than you could ever imagine 💕
+      </p>
+    </div>
+    <button onclick="showMemory()">Kenangan 💖</button>
+    <img src="bouquet.png" class="bouquet">
+    `;
+  },500);
 }
 
-/* LOVE */
 function startLoveRain(){
   setInterval(()=>{
     let el=document.createElement("div");
@@ -329,10 +350,9 @@ function startLoveRain(){
     el.style.animationDuration="4s";
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),5000);
-  },300);
+  },400);
 }
 
-/* MEMORY */
 function showMemory(){
   let i=0;
   main.innerHTML=`<img id="img" class="memory-main">`;
@@ -346,24 +366,11 @@ function showMemory(){
         img.style.opacity=1;
       },200);
       setTimeout(nextImg,2000);
-    } else showGallery();
+    }
   }
   nextImg();
 }
 
-/* GRID */
-function showGallery(){
-  main.innerHTML=`<h2>Kenangan Kita 💖</h2><div class="gallery"></div>`;
-  let g=document.querySelector(".gallery");
-
-  memoryPhotos.forEach(s=>{
-    let im=document.createElement("img");
-    im.src=s;
-    g.appendChild(im);
-  });
-}
-
-/* FOTO BACKGROUND */
 setInterval(()=>{
   let img=document.createElement("img");
   img.src="foto"+(Math.floor(Math.random()*6)+1)+".jpg";
@@ -373,7 +380,8 @@ setInterval(()=>{
   img.style.animationDuration="6s";
   document.body.appendChild(img);
   setTimeout(()=>img.remove(),7000);
-},2500);
+},3000);
+
 </script>
 
 </body>
