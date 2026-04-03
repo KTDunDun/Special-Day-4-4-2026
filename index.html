@@ -65,7 +65,7 @@ background:linear-gradient(135deg,#ff8fa3,#ff4d6d);
 color:white;font-weight:bold;margin-top:12px;
 }
 
-/* playful no button */
+/* playful no */
 #noBtn:hover{
 transform:translateX(10px) scale(0.95);
 opacity:0.7;
@@ -84,7 +84,7 @@ transition:1s ease;
 .emoji-fall{position:absolute;top:-30px;animation:fall linear;opacity:0.6}
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
 
-/* BOUQUET RIGHT */
+/* BOUQUET */
 .bouquet{
 position:fixed;right:10px;bottom:10px;
 width:35%;max-width:220px;
@@ -133,7 +133,6 @@ const emojiLayer=document.getElementById("emoji-layer");
 
 let index=0,check,started=false,fallInterval;
 
-/* TIMELINE */
 const timeline=[
 {time:1.5,text:"hey... can you stay for a moment? 🥹"},
 {time:5,text:"aku bikin ini bukan karena iseng..."},
@@ -149,7 +148,7 @@ const timeline=[
 ];
 
 function startApp(){
-if(started) return;
+if(started)return;
 started=true;
 intro.style.display="none";
 main.style.display="flex";
@@ -203,7 +202,7 @@ img.style.transform="translateY(0)";
 function attachPhoto(){
 let photo=document.getElementById("mainPhoto");
 let slot=document.getElementById("photo-slot");
-if(photo && slot) slot.appendChild(photo);
+if(photo&&slot)slot.appendChild(photo);
 }
 
 function startFalling(){
@@ -237,13 +236,11 @@ setTimeout(()=>el.remove(),7000);
 },1500);
 }
 
-/* CHOICE */
 function showChoice(){
 content.innerHTML=`
 <div class="text-box">
 <p>you feel it too, don’t you? 😏💖</p>
 </div>
-
 <div style="display:flex;gap:12px;">
 <button onclick="confirmYes()">Yes 💖</button>
 <button onclick="confirmNo()" id="noBtn">Hmm... 😌</button>
@@ -260,7 +257,6 @@ are you really sure...? 🥹<br><br>
 I’m not planning to let you go easily 😏💖
 </p>
 </div>
-
 <button onclick="finalYes()">Yes, I’m sure 💕</button>
 <button onclick="showChoice()">Wait...</button>
 `;
@@ -275,13 +271,11 @@ hmm... I don’t think that’s your real answer 😌<br><br>
 try again... I’ll wait 🥹💖
 </p>
 </div>
-
 <button onclick="confirmYes()">Okay... yes 😳</button>
 `;
 attachPhoto();
 }
 
-/* ENDING */
 function finalYes(){
 stopFalling();
 startEmoji();
@@ -301,11 +295,35 @@ setTimeout(()=>{
 content.innerHTML=`
 <div class="text-box">
 <p>
-so... you said yes 😏💖<br><br>
-this means more than you think 🤍<br><br>
-I’ll stay,<br>
-and I’ll choose you 💖<br><br>
-so stay with me, okay? 😌
+so... you really said yes 😏💖<br><br>
+
+jujur... I had a feeling you would,<br>
+but still, hearing it from you feels different 🤍<br><br>
+
+aku gak butuh sesuatu yang sempurna,<br>
+aku cuma butuh sesuatu yang nyata...<br>
+dan entah kenapa, itu kerasa ada di kamu 🥹<br><br>
+
+I don’t know how far this will go,<br>
+but I know one thing for sure...<br>
+I want to go through it with you 💖<br><br>
+
+aku bakal ada,<br>
+bukan cuma di saat semuanya mudah,<br>
+tapi juga di saat semuanya gak selalu baik<br><br>
+
+I’ll try,<br>
+not because I have to...<br>
+but because I genuinely want to 🤍<br><br>
+
+because you’re not just someone I like...<br>
+you’re someone I choose,<br>
+and someone I want to keep choosing 💖<br><br>
+
+so now that you’re here...<br>
+don’t go anywhere, okay? 😌💕<br><br>
+
+and yeah... I’m really glad it’s you 🤍
 </p>
 </div>
 
@@ -316,7 +334,6 @@ so stay with me, okay? 😌
 },1500);
 }
 
-/* MEMORY */
 function showMemory(){
 let i=0;
 content.innerHTML=`
