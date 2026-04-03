@@ -18,9 +18,9 @@ html, body{
   color:white;
 }
 
-/* BACKGROUND DEEP ROMANTIC */
+/* BACKGROUND */
 body{
-  background: linear-gradient(-45deg, #ff4d6d, #c9184a, #a4133c, #800f2f);
+  background: linear-gradient(-45deg,#ff4d6d,#c9184a,#a4133c,#800f2f);
   background-size:400% 400%;
   animation:bg 15s ease infinite;
 }
@@ -42,15 +42,6 @@ body::after{
   left:0;
 }
 
-/* glow tengah */
-body::before{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 60%);
-}
-
 /* container */
 .container{
   min-height:100vh;
@@ -63,14 +54,12 @@ body::before{
   position:relative;
 }
 
-/* text box */
 .text-box{
   background:rgba(0,0,0,0.55);
   padding:22px;
   border-radius:18px;
   backdrop-filter: blur(6px);
   max-width:320px;
-  box-shadow:0 0 30px rgba(255,255,255,0.1);
 }
 
 h1{
@@ -82,7 +71,6 @@ p{
   font-size:20px;
   line-height:1.9;
   font-weight:300;
-  letter-spacing:0.3px;
 }
 
 /* button */
@@ -118,7 +106,6 @@ button{
   top:-100px;
   border-radius:12px;
   opacity:0.75;
-  filter: blur(0.3px);
   animation: fallPhoto linear forwards;
 }
 
@@ -159,7 +146,9 @@ const lagu1 = document.getElementById("lagu1");
 const lagu2 = document.getElementById("lagu2");
 
 let step = 0;
+let isTyping = false;
 
+/* TEKS */
 const lines = [
 "jujur... aku sempet mikir lama sebelum bikin ini 😅",
 "soalnya ini bukan hal kecil buat aku...",
@@ -179,19 +168,27 @@ const lines = [
 "kamu mau gak kita jalanin ini pelan-pelan? 🥹"
 ];
 
+/* TYPE */
 function typeText(teks){
   clearInterval(window.typingInterval);
   text.innerHTML="";
   let i=0;
+  isTyping=true;
+
   window.typingInterval=setInterval(()=>{
     if(i<teks.length){
       text.innerHTML+=teks[i];
       i++;
-    } else clearInterval(window.typingInterval);
+    } else {
+      clearInterval(window.typingInterval);
+      setTimeout(()=>{isTyping=false},300);
+    }
   },35);
 }
 
 function next(){
+  if(isTyping) return;
+
   btn.innerHTML="Lanjut 👉";
   step++;
 
@@ -202,7 +199,7 @@ function next(){
   }
 
   if(step<=lines.length){
-    setTimeout(()=>{ typeText(lines[step-1]); },200);
+    setTimeout(()=>{typeText(lines[step-1])},200);
   }
 
   if(step===5){
@@ -234,9 +231,9 @@ function kabur(btn){
   btn.style.left=Math.random()*80+"%";
 }
 
-/* FOTO RAIN */
+/* FOTO */
 let photoInterval;
-const photos=["./foto1.jpg","./foto2.jpg","./foto3.jpg","./foto4.jpg","./foto5.jpg","./foto6.jpg"];
+const photos=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
 
 function photoRain(){
   photoInterval=setInterval(()=>{
@@ -251,7 +248,7 @@ function photoRain(){
   },1200);
 }
 
-/* LOVE RAIN */
+/* LOVE */
 function loveRain(){
   setInterval(()=>{
     let el=document.createElement("div");
