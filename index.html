@@ -59,7 +59,9 @@ body::after{
 h1{font-size:30px;font-weight:700;}
 p{font-size:20px;line-height:1.9;font-weight:300;}
 
-#text{transition:opacity 0.3s ease;}
+#text{
+  transition:opacity 0.3s ease;
+}
 
 button{
   margin-top:20px;
@@ -70,6 +72,8 @@ button{
   color:#ff4d6d;
   font-weight:bold;
   width:80%;
+  opacity:0;
+  transition:0.3s;
 }
 
 /* FOTO */
@@ -110,18 +114,19 @@ button{
 .photo-fall{
   position:fixed;
   top:-100px;
-  opacity:0.7;
-  animation:fall 5s linear;
+  opacity:0.85;
+  animation:fall linear;
+  box-shadow:0 8px 25px rgba(0,0,0,0.4);
 }
 @keyframes fall{
   to{transform:translateY(110vh) rotate(360deg);}
 }
 
-/* LOVE FALL */
+/* LOVE */
 .fall{
   position:fixed;
   top:-10px;
-  animation:fall 5s linear;
+  animation:fall linear;
 }
 </style>
 </head>
@@ -136,7 +141,7 @@ button{
 
   <div id="memoryContainer" class="memory-container"></div>
 
-  <button id="btn" onclick="next()">Mulai 👉</button>
+  <button id="btn" onclick="next()">Lanjut 👉</button>
 </div>
 
 <audio id="lagu1" src="awal.mp3"></audio>
@@ -151,33 +156,63 @@ const lagu2=document.getElementById("lagu2");
 let step=0;
 let isTyping=false;
 
-/* FOTO ARRAY */
+/* FOTO */
 const fallingPhotos=["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
 const memoryPhotos=[
 "kenangan1.jpg","kenangan2.jpg","kenangan3.jpg","kenangan4.jpg","kenangan5.jpg",
 "kenangan6.jpg","kenangan7.jpg","kenangan8.jpg","kenangan9.jpg","kenangan10.jpg","kenangan11.jpg"
 ];
 
-/* TEKS */
+/* TEKS FINAL */
 const lines=[
 "jujur... aku sempet mikir lama sebelum bikin ini 😅",
 "soalnya ini bukan hal kecil buat aku...",
-"jujur... aku juga sempet takut kalau ini malah bikin semuanya berubah 😅",
-"tapi setiap kita ngobrol selalu ada sesuatu yang bikin aku nyaman 🥹",
+"",
+"aku pengen nyampein ini dengan cara yang paling jujur yang aku bisa",
+"",
+"awalnya aku kira ini cuma perasaan biasa",
+"tapi ternyata... gak sesederhana itu",
+"",
+"setiap kita ngobrol...",
+"selalu ada sesuatu yang bikin aku nyaman 🥹",
+"hal kecil, tapi cukup buat bikin semuanya terasa ringan",
+"",
+"dan entah sejak kapan...",
+"kamu jadi seseorang yang sering banget aku pikirin",
+"(entah kenapa... kamu selalu berhasil muncul di pikiranku, dan anehnya... aku gak pernah keberatan dengan itu 🥹)",
+"",
 "dan dari situ aku mulai sadar...",
+"perasaan ini bukan sekadar biasa",
 "",
-"dan dari semua momen itu...",
-"aku gak pernah nyangka semuanya bisa jadi seberarti ini 🥹",
+"and somewhere along the way...",
+"I’ve fallen for you... more than I planned 💖",
 "",
-"aku mulai jatuh hati sama kamu 💖",
-"...dan mungkin ini pertama kalinya aku seberani ini untuk seseorang 🥹",
+"semua momen kecil yang kita lewatin...",
+"pelan-pelan jadi sesuatu yang berarti buat aku",
 "",
-"jadi... kalau kamu ngerasa hal yang sama",
-"kamu mau gak kita jalanin ini pelan-pelan? 🥹"
+"dan semakin lama...",
+"aku makin yakin sama apa yang aku rasain",
+"",
+"and I really want to be with you",
+"",
+"aku gak mau maksa kamu",
+"aku cuma pengen jujur sama apa yang aku rasain",
+"",
+"dan mungkin ini pertama kalinya aku seberani ini untuk seseorang",
+"",
+"and honestly... I choose you 💖",
+"",
+"mau gak kamu jalanin ini sama aku? 🥹"
 ];
 
 /* TYPE */
 function typeText(teks){
+  if(teks===""){
+    text.innerHTML="<br>";
+    isTyping=false;
+    return;
+  }
+
   text.style.opacity=0;
   setTimeout(()=>text.style.opacity=1,100);
 
@@ -218,9 +253,11 @@ function next(){
   step++;
 
   if(step===1){
-    lagu1.currentTime=25;
-    lagu1.volume=0.5;
-    lagu1.play().catch(()=>{});
+    setTimeout(()=>{
+      lagu1.currentTime=25;
+      lagu1.volume=0.5;
+      lagu1.play().catch(()=>{});
+    },500);
   }
 
   if(step<=lines.length){
@@ -244,32 +281,36 @@ function next(){
 
     let yes=document.createElement("button");
     yes.innerHTML="Mau ❤️";
+    yes.style.opacity=0;
+    setTimeout(()=>yes.style.opacity=1,100);
     yes.onclick=yesClick;
 
     document.getElementById("main").appendChild(yes);
   }
 
-  let delay=(step>=memoryStart)?2200:1500;
-  if(step===lines.length-1) delay=2500;
+  let delay=(step>=memoryStart)?2500:1500;
+  if(step===lines.length-1) delay=3000;
 
   setTimeout(()=>isTyping=false,delay);
 }
 
-/* FOTO JATUH AWAL */
+/* FOTO JATUH */
 let fallInterval=setInterval(()=>{
   let img=document.createElement("img");
   img.src=fallingPhotos[Math.floor(Math.random()*fallingPhotos.length)];
   img.className="photo-fall";
   img.style.left=Math.random()*100+"vw";
-  img.style.width="50px";
+  img.style.width=(Math.random()*40+80)+"px";
+  img.style.animationDuration=(Math.random()*3+4)+"s";
+  img.style.transform="rotate("+Math.random()*360+"deg)";
+  img.style.filter="brightness("+(Math.random()*0.3+0.8)+")";
   document.body.appendChild(img);
   setTimeout(()=>img.remove(),6000);
 },1500);
 
 /* YES */
 function yesClick(){
-
-  clearInterval(fallInterval); // stop foto awal
+  clearInterval(fallInterval);
 
   setInterval(()=>{
     let el=document.createElement("div");
@@ -287,14 +328,9 @@ function yesClick(){
       <h1>Nabila Bailey 💖</h1>
       <p>
         thank you for saying yes... 🥹❤️<br><br>
-
-        I’m sorry I couldn’t say this directly,<br>
-        but I truly mean everything 🤍<br><br>
-
+        I really mean every single word 🤍<br><br>
         I’ll always try my best for you 💖<br><br>
-
         let’s take this slowly… together ✨<br><br>
-
         and I’m really glad… it’s you 💖
       </p>
     </div>
@@ -302,6 +338,11 @@ function yesClick(){
   </div>
   `;
 }
+
+/* AUTO START */
+typeText(lines[0]);
+step=1;
+btn.style.opacity=1;
 </script>
 
 </body>
