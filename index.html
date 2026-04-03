@@ -27,7 +27,7 @@ body{
   z-index:999;
 }
 
-/* BG */
+/* BACKGROUND */
 #bg-layer{
   position:fixed;
   inset:0;
@@ -77,6 +77,7 @@ body{
   opacity:0.8;
 }
 
+/* BUTTON */
 button{
   padding:12px 18px;
   border:none;
@@ -182,21 +183,18 @@ const lines = [
 "setiap kita ngobrol...",
 "aku selalu ngerasa nyaman banget",
 "and somehow... I keep looking forward to talking to you",
-"entah sejak kapan...",
-"kamu jadi orang yang sering aku pikirin",
-"aku gak tau ini mulai dari kapan...",
-"but I know this feeling is real",
-"I think... I really like you 💖",
-"not just biasa...",
-"but something deeper than that 🥹"
+"aneh ya...",
+"you kinda live in my head rent free 😌",
+"so yeah...",
+"I like you 💖",
+"not just dikit...",
+"but in a way I actually care about you 🥹"
 ];
 
 function startApp(){
   document.getElementById("intro").style.display="none";
   document.getElementById("main").style.display="flex";
-
   document.getElementById("lagu1").play().catch(()=>{});
-
   setTimeout(startStory,1800);
 }
 
@@ -243,9 +241,7 @@ function next(){
     <div class="header-name">Hai Nabila Bailey 💕</div>
     <p id="text"></p>
   </div>
-
   <div id="photo-slot"></div>
-
   <button onclick="next()">Lanjut 👉</button>
   `;
 
@@ -289,20 +285,45 @@ function startEmoji(){
   },1200);
 }
 
+/* CHOICE */
 function showChoice(){
   content.innerHTML=`
   <div class="text-box">
-    <p>so... would you like to be with me? 🥹💖</p>
+    <p>so... you feel it too, right? 😏💖</p>
   </div>
-  <div id="photo-slot"></div>
-  <button onclick="finalYes()">Mau ❤️</button>
+  <div style="display:flex; gap:12px;">
+    <button onclick="confirmYes()">Yes 💖</button>
+    <button onclick="confirmNo()">Hmm...</button>
+  </div>
   `;
-
-  let photo=document.getElementById("mainPhoto");
-  let slot=document.getElementById("photo-slot");
-  if(photo && slot) slot.appendChild(photo);
 }
 
+function confirmYes(){
+  content.innerHTML=`
+  <div class="text-box">
+    <p>
+    are you sure...? 🥹<br><br>
+    because I’m not planning to let you go easily 😏💖
+    </p>
+  </div>
+  <button onclick="finalYes()">Yes 💕</button>
+  <button onclick="showChoice()">Wait...</button>
+  `;
+}
+
+function confirmNo(){
+  content.innerHTML=`
+  <div class="text-box">
+    <p>
+    hmm... I don’t think that’s your real answer 😌<br><br>
+    try again... I’ll wait 🥹💖
+    </p>
+  </div>
+  <button onclick="confirmYes()">Okay... yes 😳</button>
+  `;
+}
+
+/* ENDING */
 function finalYes(){
   stopFalling();
   startEmoji();
@@ -313,26 +334,19 @@ function finalYes(){
   document.getElementById("lagu1").pause();
   document.getElementById("lagu2").play().catch(()=>{});
 
+  content.innerHTML=`<div class="text-box"><p>...</p></div>`;
+
   setTimeout(()=>{
     content.innerHTML=`
     <div class="text-box">
       <p>
-      thank you for choosing me... 🥹💖<br><br>
-
-      jujur... I didn’t expect this moment to feel this real 🤍<br><br>
-
-      maybe I’m not perfect,<br>
-      but my feelings for you are real 💖<br><br>
-
-      I’ll try my best for you,<br>
-      not only in good times,<br>
-      but also when things get hard 🥹<br><br>
-
-      because to me...<br>
-      you’re someone truly special<br><br>
-
-      and if I had to choose again...<br>
-      I would still choose you 💕
+      so... you said yes 😏💖<br><br>
+      I knew it...<br>
+      but still... this means a lot 🤍<br><br>
+      I’ll be real with you,<br>
+      and I’ll stay<br><br>
+      because you’re someone I choose 💖<br><br>
+      so stay with me, okay? 😌
       </p>
     </div>
 
@@ -340,9 +354,10 @@ function finalYes(){
 
     <img src="bouquet.png" class="bouquet">
     `;
-  },1000);
+  },1500);
 }
 
+/* MEMORY */
 function showMemory(){
   let i=0;
 
