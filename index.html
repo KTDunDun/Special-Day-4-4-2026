@@ -58,11 +58,11 @@ body{
   padding:20px;
   border-radius:16px;
   max-width:320px;
-  margin-bottom:160px;
+  margin-bottom:170px;
 }
 
 .header-name{
-  font-size:16px;
+  font-size:15px;
   opacity:0.8;
   margin-bottom:10px;
 }
@@ -79,7 +79,7 @@ button{
   cursor:pointer;
 }
 
-/* PHOTO MAIN */
+/* FOTO UTAMA */
 #photo-container{
   margin-top:10px;
 }
@@ -92,7 +92,7 @@ button{
   transition:0.8s ease;
 }
 
-/* FALLING PHOTO */
+/* FOTO JATUH */
 .photo-fall{
   position:fixed;
   top:-100px;
@@ -152,6 +152,7 @@ const lagu2=document.getElementById("lagu2");
 
 let step=0, fallInterval;
 
+/* TEXT */
 const lines=[
 "jujur... aku mikir lama buat ini 😅",
 "ini bukan hal kecil buat aku",
@@ -173,6 +174,7 @@ const memoryPhotos=[
 /* START */
 function startApp(){
   startScreen.style.opacity="0";
+
   setTimeout(()=>{
     startScreen.style.display="none";
     main.style.display="flex";
@@ -207,6 +209,7 @@ function startStory(){
   next();
 }
 
+/* FOTO UTAMA */
 function showPhoto(){
   if(!document.getElementById("mainPhoto")){
     let img=document.createElement("img");
@@ -222,19 +225,22 @@ function showPhoto(){
   }
 }
 
+/* TYPEWRITER */
 function next(){
   step++;
+
   content.innerHTML=`
   <div class="text-box">
     <div class="header-name">Hai Nabila Bailey 💕</div>
     <p>${lines[step-1]}</p>
   </div>
-  <button onclick="next()">Lanjut 👉</button>`;
+  <button onclick="next()">Lanjut 👉</button>
+  `;
 
   if(step===lines.length) showChoice();
 }
 
-/* FALLING */
+/* FOTO JATUH */
 function startFalling(){
   fallInterval=setInterval(()=>{
     let img=document.createElement("img");
@@ -243,6 +249,7 @@ function startFalling(){
     img.style.left=Math.random()*100+"vw";
     img.style.width=(Math.random()*40+80)+"px";
     img.style.animationDuration=(Math.random()*3+6)+"s";
+
     document.body.appendChild(img);
     setTimeout(()=>img.remove(),8000);
   },2000);
@@ -270,10 +277,15 @@ function finalYes(){
   setTimeout(()=>{
     content.innerHTML=`
     <div class="text-box">
-    <p>thank you for choosing me... 🥹💖<br><br>I love you more than you could ever imagine 💕</p>
+      <p>
+      thank you for choosing me... 🥹💖<br><br>
+      I’ll always try my best for you 🤍<br><br>
+      I love you more than you could ever imagine 💕
+      </p>
     </div>
     <button onclick="showMemory()">Kenangan 💖</button>
-    <img src="bouquet.png" class="bouquet">`;
+    <img src="bouquet.png" class="bouquet">
+    `;
   },600);
 }
 
