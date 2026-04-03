@@ -30,12 +30,10 @@ p {
   margin:auto;
 }
 
-h1 {
-  font-size:28px;
-}
+h1 { font-size:28px; }
 
 button {
-  margin-top:30px;
+  margin-top:25px;
   padding:12px 25px;
   border-radius:20px;
   border:none;
@@ -82,7 +80,7 @@ img {
 
 <!-- SCREEN 3 -->
 <div class="screen hidden" id="s3">
-  <p>tapi ada sesuatu yang gak bisa aku anggap biasa lagi...</p>
+  <p>soalnya ada sesuatu yang makin lama makin gak bisa aku anggap biasa aja...</p>
   <button onclick="next(3)">Lanjut 👉</button>
 </div>
 
@@ -94,7 +92,7 @@ img {
 
 <!-- SCREEN 5 -->
 <div class="screen hidden" id="s5">
-  <p>dan tiap kita ngobrol, selalu ada hal kecil yang bikin aku senyum</p>
+  <p>dan tiap kita ngobrol, selalu ada hal kecil yang bikin aku senyum sendiri</p>
   <img src="foto.jpg">
   <button onclick="next(5)">Lanjut 👉</button>
 </div>
@@ -107,25 +105,31 @@ img {
 
 <!-- SCREEN 7 -->
 <div class="screen hidden" id="s7">
-  <p>tapi aku juga gak mau kehilangan kesempatan buat jujur</p>
+  <p>dan jujur... aku sempet mikir buat gak bilang ini 😅</p>
   <button onclick="next(7)">Lanjut 👉</button>
 </div>
 
 <!-- SCREEN 8 -->
 <div class="screen hidden" id="s8">
-  <p>dan tanpa aku sadar... aku mulai jatuh hati sama kamu 💖</p>
+  <p>tapi aku juga gak mau kehilangan kesempatan buat jujur</p>
   <button onclick="next(8)">Lanjut 👉</button>
 </div>
 
 <!-- SCREEN 9 -->
 <div class="screen hidden" id="s9">
-  <p>kalau kamu ngerasa hal yang sama...</p>
+  <p>dan tanpa aku sadar... aku beneran jatuh hati sama kamu 💖</p>
   <button onclick="next(9)">Lanjut 👉</button>
 </div>
 
-<!-- SCREEN 10 (CONFESSION) -->
+<!-- SCREEN 10 -->
 <div class="screen hidden" id="s10">
-  <p>kamu mau gak kita jalanin ini pelan-pelan? 🥹</p>
+  <p>kalau kamu ngerasa hal yang sama...</p>
+  <button onclick="next(10)">Lanjut 👉</button>
+</div>
+
+<!-- SCREEN 11 (CONFESSION) -->
+<div class="screen hidden" id="s11">
+  <p>kamu mau gak kita coba jalanin ini pelan-pelan? 🥹</p>
   <button onclick="yes()">Mau ❤️</button>
   <button onclick="kabur(this)">Gak 😈</button>
 </div>
@@ -135,26 +139,27 @@ img {
 <audio id="lagu2" src="ending.mp3"></audio>
 
 <script>
+const lagu1 = document.getElementById("lagu1");
+const lagu2 = document.getElementById("lagu2");
+
 function next(n){
   document.getElementById("s"+n).classList.add("hidden");
   document.getElementById("s"+(n+1)).classList.remove("hidden");
 
-  // mulai lagu pertama
   if(n==2){
     lagu1.volume=0.5;
-    lagu1.play();
+    lagu1.play().catch(()=>{});
   }
 }
 
 function kabur(btn){
   btn.style.position="absolute";
-  btn.style.top=Math.random()*80+"%";
-  btn.style.left=Math.random()*80+"%";
+  btn.style.top=Math.random()*70+"%";
+  btn.style.left=Math.random()*70+"%";
 }
 
 function yes(){
 
-  // fade out lagu1
   let fade=setInterval(()=>{
     if(lagu1.volume>0.05){
       lagu1.volume-=0.05;
@@ -163,7 +168,7 @@ function yes(){
       lagu1.pause();
 
       lagu2.volume=0;
-      lagu2.play();
+      lagu2.play().catch(()=>{});
 
       let fadeIn=setInterval(()=>{
         if(lagu2.volume<0.5){
