@@ -16,7 +16,7 @@ html, body{
   color:white;
 }
 
-/* 🌈 BACKGROUND GRADIENT */
+/* BACKGROUND */
 body{
   background: linear-gradient(-45deg,#ff758c,#ff7eb3,#ff4d6d,#ff8fa3);
   background-size:400% 400%;
@@ -29,7 +29,7 @@ body{
   100%{background-position:0% 50%}
 }
 
-/* 🌫️ overlay biar teks jelas */
+/* overlay */
 body::after{
   content:"";
   position:fixed;
@@ -40,7 +40,7 @@ body::after{
   left:0;
 }
 
-/* 📦 CONTAINER */
+/* container */
 .container{
   min-height:100vh;
   display:flex;
@@ -52,28 +52,23 @@ body::after{
   position:relative;
 }
 
-/* 🟪 BOX TEKS */
+/* text box */
 .text-box{
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.5);
   padding:20px;
   border-radius:20px;
   backdrop-filter: blur(8px);
   max-width:340px;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
-/* ✨ TEKS */
-h1{
-  font-size:30px;
-  margin-bottom:10px;
-}
-
+/* teks */
+h1{ font-size:30px; }
 p{
   font-size:20px;
   line-height:1.8;
 }
 
-/* 🔘 BUTTON */
+/* tombol */
 button{
   margin-top:20px;
   padding:12px 25px;
@@ -86,26 +81,40 @@ button{
   max-width:280px;
 }
 
-/* 📸 FOTO */
+/* foto jatuh */
+.photo-fall{
+  position:fixed;
+  top:-100px;
+  border-radius:12px;
+  animation: fallPhoto linear forwards;
+  z-index:1;
+}
+
+@keyframes fallPhoto{
+  to{
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* love/bunga */
+.fall{
+  position:fixed;
+  top:-10px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* foto tengah */
 img{
   width:220px;
   border-radius:15px;
   margin-top:20px;
   box-shadow:0 0 25px rgba(255,255,255,0.6);
-}
-
-/* 🌸 LOVE/BUNGA */
-.fall{
-  position:fixed;
-  top:-10px;
-  z-index:1;
-  animation:fall linear forwards;
-}
-
-@keyframes fall{
-  to{
-    transform:translateY(100vh) rotate(360deg);
-  }
 }
 </style>
 </head>
@@ -134,6 +143,7 @@ const lagu2 = document.getElementById("lagu2");
 
 let step = 0;
 
+/* teks */
 const lines = [
 "jujur... aku agak bingung mulai dari mana 😅",
 "soalnya ada sesuatu yang gak bisa aku anggap biasa lagi...",
@@ -146,7 +156,7 @@ const lines = [
 "kamu mau gak kita coba jalanin ini pelan-pelan? 🥹"
 ];
 
-/* ✨ efek ketik */
+/* efek ketik */
 function typeText(teks){
   text.innerHTML="";
   let i=0;
@@ -157,6 +167,7 @@ function typeText(teks){
   },30);
 }
 
+/* NEXT */
 function next(){
   btn.innerHTML="Lanjut 👉";
   step++;
@@ -200,8 +211,60 @@ function kabur(btn){
   btn.style.left=Math.random()*80+"%";
 }
 
-/* 💖 ending */
+/* FOTO RAIN */
+let photoInterval;
+
+const photos=[
+"foto1.jpg","foto2.jpg","foto3.jpg",
+"foto4.jpg","foto5.jpg","foto6.jpg"
+];
+
+function photoRain(){
+  photoInterval=setInterval(()=>{
+    let img=document.createElement("img");
+
+    let randomPhoto=photos[Math.floor(Math.random()*photos.length)];
+
+    img.src=randomPhoto;
+    img.className="photo-fall";
+
+    img.style.left=Math.random()*100+"vw";
+    img.style.animationDuration=(Math.random()*4+4)+"s";
+    img.style.width=(Math.random()*40+60)+"px";
+
+    document.body.appendChild(img);
+    setTimeout(()=>img.remove(),8000);
+
+  },1000);
+}
+
+/* LOVE RAIN */
+let loveInterval;
+
+function loveRain(){
+  loveInterval=setInterval(()=>{
+    let el=document.createElement("div");
+
+    el.className="fall";
+    el.innerHTML=Math.random()>0.5?"💖":"🌸";
+
+    el.style.left=Math.random()*100+"vw";
+    el.style.fontSize=(Math.random()*20+15)+"px";
+    el.style.animationDuration=(Math.random()*4+3)+"s";
+
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),7000);
+
+  },300);
+}
+
+/* YES */
 function yes(){
+
+  clearInterval(photoInterval);
+  document.querySelectorAll(".photo-fall").forEach(el=>el.remove());
+
+  loveRain();
 
   let fade=setInterval(()=>{
     if(lagu1.volume>0.05){
@@ -231,20 +294,11 @@ function yes(){
     <img src="bouquet.png">
   </div>
   `;
-
 }
 
-/* 🌸 efek jatuh dari awal */
-setInterval(()=>{
-  let f=document.createElement("div");
-  f.className="fall";
-  f.innerHTML=Math.random()>0.5?"💖":"🌸";
-  f.style.left=Math.random()*100+"vw";
-  f.style.fontSize=(Math.random()*20+15)+"px";
-  f.style.animationDuration=(Math.random()*4+3)+"s";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),7000);
-},200);
+/* start foto rain */
+photoRain();
+
 </script>
 
 </body>
